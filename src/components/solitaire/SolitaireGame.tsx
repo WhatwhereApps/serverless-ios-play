@@ -10,7 +10,7 @@ export const SolitaireGame = () => {
     drawFromDeck, 
     moveCard, 
     selectCard, 
-    autoMoveToFoundation 
+    restartGame 
   } = useSolitaire();
 
   const handleCardClick = (card: CardType, pileType: string, pileIndex?: number, cardIndex?: number) => {
@@ -64,7 +64,7 @@ export const SolitaireGame = () => {
         moves={gameState.moves}
         time={gameState.time}
         onNewGame={dealCards}
-        onAutoMove={autoMoveToFoundation}
+        onRestart={restartGame}
         isWon={gameState.isWon}
       />
       

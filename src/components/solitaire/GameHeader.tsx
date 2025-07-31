@@ -6,11 +6,11 @@ interface GameHeaderProps {
   moves: number;
   time: number;
   onNewGame: () => void;
-  onAutoMove: () => void;
+  onRestart: () => void;
   isWon: boolean;
 }
 
-export const GameHeader = ({ score, moves, time, onNewGame, onAutoMove, isWon }: GameHeaderProps) => {
+export const GameHeader = ({ score, moves, time, onNewGame, onRestart, isWon }: GameHeaderProps) => {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -40,10 +40,11 @@ export const GameHeader = ({ score, moves, time, onNewGame, onAutoMove, isWon }:
         <Button
           variant="outline"
           size="sm"
-          onClick={onAutoMove}
-          className="hover:bg-primary hover:text-primary-foreground"
+          onClick={onRestart}
+          className="hover:bg-primary hover:text-primary-foreground gap-2"
         >
-          Auto Move
+          <RefreshCw className="w-4 h-4" />
+          Restart
         </Button>
         
         <Button

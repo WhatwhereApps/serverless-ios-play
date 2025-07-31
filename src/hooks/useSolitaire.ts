@@ -229,46 +229,22 @@ export const useSolitaire = () => {
     });
   }, []);
 
-  const autoMoveToFoundation = useCallback(() => {
-    setGameState(prev => {
-      const newState = { ...prev };
-      let moved = false;
-
-      // Check waste pile
-      if (prev.waste.length > 0) {
-        const topCard = prev.waste[prev.waste.length - 1];
-        for (let i = 0; i < 4; i++) {
-          if (canMoveToFoundation(topCard, prev.foundations[i])) {
-            moveCard('waste', undefined, 'foundation', i);
-            moved = true;
-            break;
-          }
-        }
-      }
-
-      // Check tableau piles
-      if (!moved) {
-        for (let i = 0; i < 7; i++) {
-          const pile = prev.tableau[i];
-          if (pile.length > 0) {
-            const topCard = pile[pile.length - 1];
-            if (topCard.faceUp) {
-              for (let j = 0; j < 4; j++) {
-                if (canMoveToFoundation(topCard, prev.foundations[j])) {
-                  moveCard('tableau', i, 'foundation', j);
-                  moved = true;
-                  break;
-                }
-              }
-            }
-          }
-          if (moved) break;
-        }
-      }
-
-      return newState;
-    });
-  }, [moveCard]);
+  const restartGame = useCallback(() => {
+    setGameState(prev => ({
+      ...prev,
+      deck: createDeck(),
+      waste: [],
+      foundations: [[], [], [], []],
+      tableau: [[], [], [], [], [], [], []],
+      selectedCard: null,
+      selectedPile: null,
+      moves: 0,
+      score: 500,
+      time: 0,
+      isWon: false,
+    }));
+    dealCards();
+  }, [createDeck, dealCards]);
 
   // Timer effect
   useEffect(() => {
@@ -292,6 +268,6 @@ export const useSolitaire = () => {
     drawFromDeck,
     moveCard,
     selectCard,
-    autoMoveToFoundation,
+    restartGame,
   };
 };
