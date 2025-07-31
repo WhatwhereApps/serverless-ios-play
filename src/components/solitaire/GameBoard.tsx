@@ -7,10 +7,27 @@ interface GameBoardProps {
   onCardClick: (card: any, pileType: string, pileIndex?: number, cardIndex?: number) => void;
   onEmptyPileClick: (pileType: string, pileIndex?: number) => void;
   onDeckClick: () => void;
+  onCardDrop: (pileType: string, pileIndex?: number) => void;
+  onDragStart: (card: any, pileType: string, pileIndex?: number, cardIndex?: number) => void;
+  onDragEnd: () => void;
+  dragState: {
+    isDragging: boolean;
+    dragCard: any;
+    dragSource: { type: string; index?: number; cardIndex?: number } | null;
+  };
 }
 
-export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClick }: GameBoardProps) => {
+export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClick, onCardDrop, onDragStart, onDragEnd, dragState }: GameBoardProps) => {
   const { deck, waste, foundations, tableau, selectedCard } = gameState;
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent, pileType: string, pileIndex?: number) => {
+    e.preventDefault();
+    onCardDrop(pileType, pileIndex);
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
@@ -38,13 +55,23 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           </div>
 
           {/* Waste */}
-          <div className="w-16 h-24 rounded-lg border-2 border-dashed border-border relative">
+          <div 
+            className={cn(
+              "w-16 h-24 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
+              dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
+            )}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, 'waste')}
+          >
             {waste.length > 0 ? (
               <Card
                 card={waste[waste.length - 1]}
                 onClick={() => onCardClick(waste[waste.length - 1], 'waste')}
+                onDragStart={() => onDragStart(waste[waste.length - 1], 'waste')}
+                onDragEnd={onDragEnd}
                 isSelected={selectedCard?.id === waste[waste.length - 1]?.id}
                 isSelectable={true}
+                isDragging={dragState.isDragging && dragState.dragCard?.id === waste[waste.length - 1]?.id}
               />
             ) : (
               <div className="w-full h-full bg-game-felt-light rounded-lg" />
@@ -57,15 +84,23 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           {foundations.map((foundation, index) => (
             <div
               key={index}
-              className="w-16 h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50"
+              className={cn(
+                "w-16 h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
+                dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
+              )}
               onClick={() => onEmptyPileClick('foundation', index)}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, 'foundation', index)}
             >
               {foundation.length > 0 ? (
                 <Card
                   card={foundation[foundation.length - 1]}
                   onClick={() => onCardClick(foundation[foundation.length - 1], 'foundation', index)}
+                  onDragStart={() => onDragStart(foundation[foundation.length - 1], 'foundation', index)}
+                  onDragEnd={onDragEnd}
                   isSelected={selectedCard?.id === foundation[foundation.length - 1]?.id}
                   isSelectable={true}
+                  isDragging={dragState.isDragging && dragState.dragCard?.id === foundation[foundation.length - 1]?.id}
                 />
               ) : (
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
@@ -82,11 +117,22 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
       {/* Bottom Row: Tableau */}
       <div className="flex gap-4 justify-center">
         {tableau.map((pile, pileIndex) => (
-          <div key={pileIndex} className="flex flex-col relative min-h-32">
+          <div 
+            key={pileIndex} 
+            className={cn(
+              "flex flex-col relative min-h-32 transition-all duration-300",
+              dragState.isDragging && "hover:bg-muted/10 rounded-lg"
+            )}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, 'tableau', pileIndex)}
+          >
             {/* Empty pile placeholder */}
             {pile.length === 0 && (
               <div
-                className="w-16 h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50"
+                className={cn(
+                  "w-16 h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50",
+                  dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
+                )}
                 onClick={() => onEmptyPileClick('tableau', pileIndex)}
               >
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
@@ -104,14 +150,18 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                 isLastCard || 
                 pile.slice(cardIndex).every(c => c.faceUp)
               );
+              const isDragging = dragState.isDragging && dragState.dragCard?.id === card.id;
 
               return (
                 <Card
                   key={card.id}
                   card={card}
                   onClick={canSelect ? () => onCardClick(card, 'tableau', pileIndex, cardIndex) : undefined}
+                  onDragStart={canSelect ? () => onDragStart(card, 'tableau', pileIndex, cardIndex) : undefined}
+                  onDragEnd={onDragEnd}
                   isSelected={selectedCard?.id === card.id}
                   isSelectable={canSelect}
+                  isDragging={isDragging}
                   style={{
                     marginTop: cardIndex > 0 ? '-60px' : '0',
                     zIndex: cardIndex,

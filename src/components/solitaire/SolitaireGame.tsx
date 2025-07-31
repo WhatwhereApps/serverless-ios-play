@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSolitaire } from '@/hooks/useSolitaire';
 import { GameHeader } from './GameHeader';
 import { GameBoard } from './GameBoard';
@@ -12,6 +13,12 @@ export const SolitaireGame = () => {
     selectCard, 
     restartGame 
   } = useSolitaire();
+
+  const [dragState, setDragState] = useState({
+    isDragging: false,
+    dragCard: null as CardType | null,
+    dragSource: null as { type: string; index?: number; cardIndex?: number } | null,
+  });
 
   const handleCardClick = (card: CardType, pileType: string, pileIndex?: number, cardIndex?: number) => {
     if (gameState.selectedCard) {
@@ -57,6 +64,34 @@ export const SolitaireGame = () => {
     }
   };
 
+  const handleDragStart = (card: CardType, pileType: string, pileIndex?: number, cardIndex?: number) => {
+    setDragState({
+      isDragging: true,
+      dragCard: card,
+      dragSource: { type: pileType, index: pileIndex, cardIndex },
+    });
+  };
+
+  const handleDragEnd = () => {
+    setDragState({
+      isDragging: false,
+      dragCard: null,
+      dragSource: null,
+    });
+  };
+
+  const handleCardDrop = (pileType: string, pileIndex?: number) => {
+    if (!dragState.dragSource || !dragState.dragCard) return;
+
+    const { type: fromType, index: fromIndex, cardIndex } = dragState.dragSource;
+    
+    // Use the existing moveCard logic
+    moveCard(fromType, fromIndex, pileType, pileIndex, cardIndex);
+    
+    // Reset drag state
+    handleDragEnd();
+  };
+
   return (
     <div className="min-h-screen bg-game-felt p-4 space-y-6">
       <GameHeader
@@ -73,6 +108,10 @@ export const SolitaireGame = () => {
         onCardClick={handleCardClick}
         onEmptyPileClick={handleEmptyPileClick}
         onDeckClick={drawFromDeck}
+        onCardDrop={handleCardDrop}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        dragState={dragState}
       />
 
       {gameState.isWon && (

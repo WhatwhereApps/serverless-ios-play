@@ -4,8 +4,11 @@ import { cn } from '@/lib/utils';
 interface CardProps {
   card: CardType;
   onClick?: () => void;
+  onDragStart?: (e: React.DragEvent) => void;
+  onDragEnd?: (e: React.DragEvent) => void;
   isSelected?: boolean;
   isSelectable?: boolean;
+  isDragging?: boolean;
   style?: React.CSSProperties;
   className?: string;
 }
@@ -20,8 +23,11 @@ const suitSymbols = {
 export const Card = ({ 
   card, 
   onClick, 
+  onDragStart,
+  onDragEnd,
   isSelected = false, 
   isSelectable = false,
+  isDragging = false,
   style,
   className 
 }: CardProps) => {
@@ -33,9 +39,13 @@ export const Card = ({
           "bg-card-back shadow-card hover:shadow-card-hover",
           "flex items-center justify-center relative overflow-hidden",
           isSelectable && "hover:scale-105",
+          isDragging && "opacity-50 scale-95",
           className
         )}
         onClick={onClick}
+        draggable={isSelectable}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
         style={style}
       >
         <div className="absolute inset-2 rounded border border-white/20 bg-gradient-to-br from-blue-900/50 to-blue-800/50" />
@@ -53,11 +63,15 @@ export const Card = ({
         isSelected && "border-card-highlight shadow-card-hover scale-105 ring-2 ring-card-highlight",
         !isSelected && "border-border hover:border-card-highlight",
         isSelectable && "hover:scale-105 hover:shadow-card-hover",
+        isDragging && "opacity-50 scale-95 rotate-3",
         card.color === 'red' && "text-card-red",
         card.color === 'black' && "text-card-black",
         className
       )}
       onClick={onClick}
+      draggable={isSelectable}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
       style={style}
     >
       {/* Top left corner */}
