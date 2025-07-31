@@ -52,6 +52,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'game-felt': 'hsl(var(--game-felt))',
+				'game-felt-light': 'hsl(var(--game-felt-light))',
+				'card-red': 'hsl(var(--card-red))',
+				'card-black': 'hsl(var(--card-black))',
+				'card-back': 'hsl(var(--card-back))',
+				'card-highlight': 'hsl(var(--card-highlight))',
+				'victory-glow': 'hsl(var(--victory-glow))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,11 +91,47 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'card-flip': {
+					'0%': { transform: 'rotateY(0deg)' },
+					'50%': { transform: 'rotateY(90deg)' },
+					'100%': { transform: 'rotateY(0deg)' }
+				},
+				'card-deal': {
+					'0%': { 
+						transform: 'translateX(-100px) rotate(-10deg)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'translateX(0) rotate(0deg)',
+						opacity: '1'
+					}
+				},
+				'victory-pulse': {
+					'0%, 100%': { 
+						transform: 'scale(1)',
+						filter: 'brightness(1)'
+					},
+					'50%': { 
+						transform: 'scale(1.02)',
+						filter: 'brightness(1.1)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'card-flip': 'card-flip 0.6s ease-in-out',
+				'card-deal': 'card-deal 0.4s ease-out',
+				'victory-pulse': 'victory-pulse 2s ease-in-out infinite'
+			},
+			boxShadow: {
+				'card': 'var(--card-shadow)',
+				'card-hover': 'var(--card-hover-shadow)',
+			},
+			transitionProperty: {
+				'smooth': 'var(--transition-smooth)',
+				'bounce': 'var(--transition-bounce)'
 			}
 		}
 	},
