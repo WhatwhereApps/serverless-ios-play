@@ -75,7 +75,7 @@ export const Card = ({
       style={style}
     >
       {/* Top left corner */}
-      <div className="flex flex-col items-center leading-none">
+      <div className="absolute top-1 left-1 flex flex-col items-center leading-none">
         <span className="text-xs font-bold">{card.rank}</span>
         <span className="text-sm">{suitSymbols[card.suit]}</span>
       </div>
@@ -86,7 +86,7 @@ export const Card = ({
       </div>
 
       {/* Bottom right corner (rotated) */}
-      <div className="flex flex-col items-center leading-none self-end rotate-180">
+      <div className="absolute bottom-1 right-1 flex flex-col items-center leading-none rotate-180">
         <span className="text-xs font-bold">{card.rank}</span>
         <span className="text-sm">{suitSymbols[card.suit]}</span>
       </div>
