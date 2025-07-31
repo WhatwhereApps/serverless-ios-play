@@ -65,7 +65,7 @@ export const useSolitaire = () => {
       selectedCard: null,
       selectedPile: null,
       moves: 0,
-      score: 500,
+      score: 0,
       time: 0,
       isWon: false,
     });
@@ -239,7 +239,7 @@ export const useSolitaire = () => {
       selectedCard: null,
       selectedPile: null,
       moves: 0,
-      score: 500,
+      score: 0,
       time: 0,
       isWon: false,
     }));
