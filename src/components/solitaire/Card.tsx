@@ -74,8 +74,8 @@ export const Card = ({
       onDragEnd={onDragEnd}
       style={style}
     >
-      {/* Top left corner */}
-      <div className="flex flex-col items-center leading-none">
+      {/* Top right corner */}
+      <div className="flex flex-col items-center leading-none self-end">
         <span className="text-xs font-bold">{card.rank}</span>
         <span className="text-sm">{suitSymbols[card.suit]}</span>
       </div>
@@ -85,8 +85,8 @@ export const Card = ({
         <span className="text-2xl opacity-20">{suitSymbols[card.suit]}</span>
       </div>
 
-      {/* Bottom right corner (rotated) */}
-      <div className="flex flex-col items-center leading-none self-end rotate-180">
+      {/* Bottom left corner (rotated) */}
+      <div className="flex flex-col items-center leading-none rotate-180">
         <span className="text-xs font-bold">{card.rank}</span>
         <span className="text-sm">{suitSymbols[card.suit]}</span>
       </div>
