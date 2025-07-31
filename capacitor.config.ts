@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.lovable.solitaire',
+  appId: 'com.lovable.app',
   appName: 'Solitaire Game',
   webDir: 'dist',
   server: {
