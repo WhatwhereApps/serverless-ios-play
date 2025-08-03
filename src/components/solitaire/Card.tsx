@@ -80,10 +80,6 @@ export const Card = ({
         <span className="text-sm">{suitSymbols[card.suit]}</span>
       </div>
 
-      {/* Center symbol */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-2xl opacity-20">{suitSymbols[card.suit]}</span>
-      </div>
 
       {/* Bottom right corner (rotated) */}
       <div className="absolute bottom-1 right-1 flex flex-col items-center leading-none rotate-180">
