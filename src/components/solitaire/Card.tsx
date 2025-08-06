@@ -69,11 +69,10 @@ export const Card = ({
     return (
       <div
         className={cn(
-          "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-border cursor-pointer transition-all duration-300",
-          "bg-card-back shadow-card hover:shadow-card-hover",
+          "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-border cursor-pointer",
+          "bg-card-back shadow-card",
           "flex items-center justify-center relative overflow-hidden",
-          isSelectable && "hover:scale-105",
-          isDragging && "opacity-50 scale-95",
+          isDragging && "opacity-50",
           className
         )}
         onClick={onClick}
@@ -93,14 +92,12 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 transition-all duration-300 cursor-pointer",
+        "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 cursor-pointer",
         "bg-card text-card-foreground shadow-card relative overflow-hidden",
         "flex flex-col justify-between p-0.5 sm:p-1",
-        "transition-all duration-300 transform-gpu",
-        isSelected && "border-card-highlight shadow-card-hover scale-105 ring-2 ring-card-highlight animate-pulse",
-        !isSelected && "border-border hover:border-card-highlight",
-        isSelectable && "hover:scale-105 hover:shadow-card-hover active:scale-95",
-        isDragging && "opacity-50 scale-95 rotate-3",
+        isSelected && "border-card-highlight shadow-card-hover ring-2 ring-card-highlight",
+        !isSelected && "border-border",
+        isDragging && "opacity-50",
         card.color === 'red' && "text-card-red",
         card.color === 'black' && "text-card-black",
         className
