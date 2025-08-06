@@ -30,9 +30,9 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
   };
 
   return (
-    <div className="w-full mx-auto space-y-2 sm:space-y-3 lg:space-y-4 px-1 sm:px-2 lg:px-4">
+    <div className="w-full mx-auto space-y-4 sm:space-y-6 lg:space-y-8 px-1 sm:px-2 lg:px-4">
       {/* Top Row: All piles on left side for mobile */}
-      <div className="flex flex-wrap justify-center sm:justify-between items-center gap-1 sm:gap-2">
+      <div className="flex flex-wrap justify-center sm:justify-between items-center gap-2 sm:gap-4">
         {/* Left side: Deck and Waste */}
         <div className="flex gap-1 sm:gap-2 lg:gap-4 order-1">
           {/* Deck */}
@@ -79,8 +79,9 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           </div>
         </div>
 
-        {/* Foundations - next to deck/waste on mobile */}
-        <div className="flex gap-1 sm:gap-2 lg:gap-4 order-2">
+        
+        {/* Foundations - with space from discard pile */}
+        <div className="flex gap-1 sm:gap-2 lg:gap-4 order-2 ml-4 sm:ml-6">
           {foundations.map((foundation, index) => (
             <div
               key={index}

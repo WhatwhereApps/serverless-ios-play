@@ -104,7 +104,7 @@ export const SolitaireGame = () => {
   }
 
   return (
-    <div className="min-h-screen bg-game-felt p-2 sm:p-4 space-y-3 sm:space-y-6">
+    <div className="min-h-screen bg-game-felt p-2 sm:p-4 pt-8 sm:pt-4 space-y-4 sm:space-y-6">
       <GameHeader
         score={gameState.score}
         moves={gameState.moves}
