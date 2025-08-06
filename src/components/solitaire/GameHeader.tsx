@@ -44,7 +44,7 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, isWon }: 
           className="hover:bg-primary hover:text-primary-foreground gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
           <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="hidden sm:inline">Restart</span>
+          <span className="text-xs sm:text-sm">Restart</span>
         </Button>
         
         <Button
@@ -54,7 +54,7 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, isWon }: 
           className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
           <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="hidden sm:inline">New Game</span>
+          <span className="text-xs sm:text-sm">New Game</span>
         </Button>
       </div>
 
