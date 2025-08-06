@@ -18,6 +18,9 @@ export default {
 			}
 		},
     extend: {
+      spacing: {
+        '18': '4.5rem',
+      },
       fontFamily: {
         'fredoka': ['Fredoka One', 'cursive'],
         'orbitron': ['Orbitron', 'monospace'],

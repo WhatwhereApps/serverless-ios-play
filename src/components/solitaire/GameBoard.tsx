@@ -38,7 +38,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           {/* Deck */}
           <div
             className={cn(
-              "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-300",
+              "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-300",
               deck.length > 0 
                 ? "border-transparent" 
                 : "border-border bg-game-felt-light hover:bg-muted/50"
@@ -57,7 +57,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           {/* Waste */}
           <div 
             className={cn(
-              "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
+              "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
               dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
             )}
             onDragOver={handleDragOver}
@@ -86,7 +86,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
             <div
               key={index}
               className={cn(
-                "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
+                "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
                 dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
               )}
               onClick={() => onEmptyPileClick('foundation', index)}
@@ -105,8 +105,8 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                 />
               ) : (
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                  <div className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                    <span className="text-[8px] sm:text-xs text-muted-foreground">A</span>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                    <span className="text-xs sm:text-sm text-muted-foreground">A</span>
                   </div>
                 </div>
               )}
@@ -121,7 +121,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           <div 
             key={pileIndex} 
             className={cn(
-              "flex flex-col relative min-h-16 sm:min-h-20 lg:min-h-32 transition-all duration-300",
+              "flex flex-col relative min-h-20 sm:min-h-24 lg:min-h-36 transition-all duration-300",
               dragState.isDragging && "hover:bg-muted/10 rounded-lg"
             )}
             onDragOver={handleDragOver}
@@ -131,14 +131,14 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
             {pile.length === 0 && (
               <div
                 className={cn(
-                  "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50",
+                  "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50",
                   dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
                 )}
                 onClick={() => onEmptyPileClick('tableau', pileIndex)}
               >
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                  <div className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                    <span className="text-[8px] sm:text-xs text-muted-foreground">K</span>
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                      <span className="text-xs sm:text-sm text-muted-foreground">K</span>
                   </div>
                 </div>
               </div>
@@ -164,7 +164,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                   isSelectable={canSelect}
                   isDragging={isDragging}
                   style={{
-                    marginTop: cardIndex > 0 ? '-32px' : '0', // Tight overlap for mobile
+                    marginTop: cardIndex > 0 ? '-40px' : '0', // Increased overlap for bigger cards
                     zIndex: cardIndex,
                   }}
                   className={cn(

@@ -47,7 +47,7 @@ export const Card = ({
     return (
       <div
         className={cn(
-          "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-border cursor-pointer transition-all duration-300",
+          "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-border cursor-pointer transition-all duration-300",
           "bg-card-back shadow-card hover:shadow-card-hover",
           "flex items-center justify-center relative overflow-hidden",
           isSelectable && "hover:scale-105",
@@ -71,7 +71,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 transition-all duration-300 cursor-pointer",
+        "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 transition-all duration-300 cursor-pointer",
         "bg-card text-card-foreground shadow-card relative overflow-hidden",
         "flex flex-col justify-between p-0.5 sm:p-1",
         isSelected && "border-card-highlight shadow-card-hover scale-105 ring-2 ring-card-highlight",
@@ -91,16 +91,16 @@ export const Card = ({
       style={style}
     >
       {/* Top left corner */}
-      <div className="absolute top-0.5 left-0.5 sm:top-1 sm:left-1 flex flex-col items-center leading-none">
-        <span className="text-[8px] sm:text-xs font-bold">{card.rank}</span>
-        <span className="text-[10px] sm:text-sm">{suitSymbols[card.suit]}</span>
+      <div className="absolute top-1 left-1 sm:top-1.5 sm:left-1.5 flex flex-col items-center leading-none">
+        <span className="text-xs sm:text-sm font-bold">{card.rank}</span>
+        <span className="text-sm sm:text-base">{suitSymbols[card.suit]}</span>
       </div>
 
 
       {/* Bottom right corner (rotated) */}
-      <div className="absolute bottom-0.5 right-0.5 sm:bottom-1 sm:right-1 flex flex-col items-center leading-none rotate-180">
-        <span className="text-[8px] sm:text-xs font-bold">{card.rank}</span>
-        <span className="text-[10px] sm:text-sm">{suitSymbols[card.suit]}</span>
+      <div className="absolute bottom-1 right-1 sm:bottom-1.5 sm:right-1.5 flex flex-col items-center leading-none rotate-180">
+        <span className="text-xs sm:text-sm font-bold">{card.rank}</span>
+        <span className="text-sm sm:text-base">{suitSymbols[card.suit]}</span>
       </div>
     </div>
   );
