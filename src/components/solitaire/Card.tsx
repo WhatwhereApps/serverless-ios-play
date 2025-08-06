@@ -32,11 +32,17 @@ export const Card = ({
   className 
 }: CardProps) => {
   const handleDragStart = (e: React.DragEvent) => {
-    console.log('Card handleDragStart called', { isSelectable, onDragStart });
+    console.log('Card handleDragStart called', { 
+      cardId: card.id, 
+      isSelectable, 
+      hasOnDragStart: !!onDragStart
+    });
     if (isSelectable && onDragStart) {
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', card.id);
       onDragStart(e);
+    } else {
+      console.log('Drag blocked:', { isSelectable, hasOnDragStart: !!onDragStart });
     }
   };
 
