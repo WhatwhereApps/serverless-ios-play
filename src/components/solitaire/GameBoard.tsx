@@ -38,7 +38,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           {/* Deck */}
           <div
             className={cn(
-              "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-300",
+              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-300",
               deck.length > 0 
                 ? "border-transparent" 
                 : "border-border bg-game-felt-light hover:bg-muted/50"
@@ -57,7 +57,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           {/* Waste */}
           <div 
             className={cn(
-              "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
+              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
               dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
             )}
             onDragOver={handleDragOver}
@@ -86,7 +86,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
             <div
               key={index}
               className={cn(
-                "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
+                "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
                 dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
               )}
               onClick={() => onEmptyPileClick('foundation', index)}
@@ -121,7 +121,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           <div 
             key={pileIndex} 
             className={cn(
-              "flex flex-col relative min-h-20 sm:min-h-24 lg:min-h-36 transition-all duration-300",
+              "flex flex-col relative min-h-22 sm:min-h-26 lg:min-h-40 transition-all duration-300",
               dragState.isDragging && "hover:bg-muted/10 rounded-lg"
             )}
             onDragOver={handleDragOver}
@@ -131,7 +131,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
             {pile.length === 0 && (
               <div
                 className={cn(
-                  "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50",
+                  "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50",
                   dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
                 )}
                 onClick={() => onEmptyPileClick('tableau', pileIndex)}

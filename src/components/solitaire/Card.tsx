@@ -47,7 +47,7 @@ export const Card = ({
     return (
       <div
         className={cn(
-          "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 border-border cursor-pointer transition-all duration-300",
+          "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-border cursor-pointer transition-all duration-300",
           "bg-card-back shadow-card hover:shadow-card-hover",
           "flex items-center justify-center relative overflow-hidden",
           isSelectable && "hover:scale-105",
@@ -71,7 +71,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "w-12 h-16 sm:w-16 sm:h-20 md:w-18 md:h-24 lg:w-20 lg:h-28 rounded-lg border-2 transition-all duration-300 cursor-pointer",
+        "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 transition-all duration-300 cursor-pointer",
         "bg-card text-card-foreground shadow-card relative overflow-hidden",
         "flex flex-col justify-between p-0.5 sm:p-1",
         isSelected && "border-card-highlight shadow-card-hover scale-105 ring-2 ring-card-highlight",
