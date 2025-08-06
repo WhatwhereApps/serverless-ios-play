@@ -25,6 +25,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
   };
 
   const handleDrop = (e: React.DragEvent, pileType: string, pileIndex?: number) => {
+    console.log('GameBoard handleDrop called', { pileType, pileIndex });
     e.preventDefault();
     onCardDrop(pileType, pileIndex);
   };

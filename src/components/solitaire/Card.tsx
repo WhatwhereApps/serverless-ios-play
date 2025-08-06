@@ -32,12 +32,16 @@ export const Card = ({
   className 
 }: CardProps) => {
   const handleDragStart = (e: React.DragEvent) => {
+    console.log('Card handleDragStart called', { isSelectable, onDragStart });
     if (isSelectable && onDragStart) {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', card.id);
       onDragStart(e);
     }
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
+    console.log('Card handleDragEnd called');
     if (onDragEnd) {
       onDragEnd(e);
     }
