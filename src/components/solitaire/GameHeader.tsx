@@ -18,43 +18,43 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, isWon }: 
   };
 
   return (
-    <div className="flex items-center justify-between p-4 bg-secondary/50 backdrop-blur-sm rounded-lg border border-border">
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-victory-glow" />
-          <span className="text-lg font-bold text-foreground">{score}</span>
+    <div className="flex items-center justify-between p-2 sm:p-4 pt-safe-area-inset-top bg-secondary/50 backdrop-blur-sm rounded-lg border border-border mt-2 sm:mt-0">
+      <div className="flex items-center gap-2 sm:gap-6">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-victory-glow" />
+          <span className="text-sm sm:text-lg font-bold text-foreground">{score}</span>
         </div>
         
-        <div className="flex items-center gap-2">
-          <Target className="w-5 h-5 text-muted-foreground" />
-          <span className="text-lg font-semibold text-foreground">{moves}</span>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Target className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+          <span className="text-sm sm:text-lg font-semibold text-foreground">{moves}</span>
         </div>
         
-        <div className="flex items-center gap-2">
-          <Clock className="w-5 h-5 text-muted-foreground" />
-          <span className="text-lg font-mono text-foreground">{formatTime(time)}</span>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+          <span className="text-sm sm:text-lg font-mono text-foreground">{formatTime(time)}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1 sm:gap-3">
         <Button
           variant="outline"
           size="sm"
           onClick={onRestart}
-          className="hover:bg-primary hover:text-primary-foreground gap-2"
+          className="hover:bg-primary hover:text-primary-foreground gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
-          <RefreshCw className="w-4 h-4" />
-          Restart
+          <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Restart</span>
         </Button>
         
         <Button
           variant="default"
           size="sm"
           onClick={onNewGame}
-          className="gap-2"
+          className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
-          <RefreshCw className="w-4 h-4" />
-          New Game
+          <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">New Game</span>
         </Button>
       </div>
 

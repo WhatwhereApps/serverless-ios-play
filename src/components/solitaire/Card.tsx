@@ -4,8 +4,8 @@ import { cn } from '@/lib/utils';
 interface CardProps {
   card: CardType;
   onClick?: () => void;
-  onDragStart?: (e: React.DragEvent) => void;
-  onDragEnd?: (e: React.DragEvent) => void;
+  onDragStart?: (e?: React.DragEvent | React.TouchEvent) => void;
+  onDragEnd?: (e?: React.DragEvent | React.TouchEvent) => void;
   isSelected?: boolean;
   isSelectable?: boolean;
   isDragging?: boolean;
@@ -31,6 +31,18 @@ export const Card = ({
   style,
   className 
 }: CardProps) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (isSelectable && onDragStart) {
+      e.preventDefault();
+      onDragStart(e);
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (onDragEnd) {
+      onDragEnd(e);
+    }
+  };
   if (!card.faceUp) {
     return (
       <div
@@ -46,6 +58,8 @@ export const Card = ({
         draggable={isSelectable}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         style={style}
       >
         <div className="absolute inset-2 rounded border border-white/20 bg-gradient-to-br from-blue-900/50 to-blue-800/50" />
@@ -72,6 +86,8 @@ export const Card = ({
       draggable={isSelectable}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       style={style}
     >
       {/* Top left corner */}
