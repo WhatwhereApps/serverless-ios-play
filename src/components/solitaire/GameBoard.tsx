@@ -30,15 +30,15 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-6">
+    <div className="w-full mx-auto space-y-2 sm:space-y-3 lg:space-y-4 px-1 sm:px-2 lg:px-4">
       {/* Top Row: Deck, Waste, and Foundations */}
-      <div className="flex justify-between items-start">
+      <div className="flex flex-col landscape:flex-row justify-between items-center landscape:items-start gap-2 landscape:gap-0">
         {/* Left side: Deck and Waste */}
-        <div className="flex gap-4">
+        <div className="flex gap-1 sm:gap-2 lg:gap-4">
           {/* Deck */}
           <div
             className={cn(
-              "w-16 h-24 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-300",
+              "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-300",
               deck.length > 0 
                 ? "border-transparent" 
                 : "border-border bg-game-felt-light hover:bg-muted/50"
@@ -57,7 +57,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           {/* Waste */}
           <div 
             className={cn(
-              "w-16 h-24 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
+              "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
               dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
             )}
             onDragOver={handleDragOver}
@@ -80,12 +80,12 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
         </div>
 
         {/* Right side: Foundations */}
-        <div className="flex gap-4">
+        <div className="flex gap-1 sm:gap-2 lg:gap-4">
           {foundations.map((foundation, index) => (
             <div
               key={index}
               className={cn(
-                "w-16 h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
+                "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
                 dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
               )}
               onClick={() => onEmptyPileClick('foundation', index)}
@@ -104,8 +104,8 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                 />
               ) : (
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                  <div className="w-8 h-8 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">A</span>
+                  <div className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                    <span className="text-[8px] sm:text-xs text-muted-foreground">A</span>
                   </div>
                 </div>
               )}
@@ -115,12 +115,12 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
       </div>
 
       {/* Bottom Row: Tableau */}
-      <div className="flex gap-4 justify-center">
+      <div className="grid grid-cols-7 gap-px sm:gap-1 lg:gap-2 justify-center w-full">
         {tableau.map((pile, pileIndex) => (
           <div 
             key={pileIndex} 
             className={cn(
-              "flex flex-col relative min-h-32 transition-all duration-300",
+              "flex flex-col relative min-h-16 sm:min-h-20 lg:min-h-32 transition-all duration-300",
               dragState.isDragging && "hover:bg-muted/10 rounded-lg"
             )}
             onDragOver={handleDragOver}
@@ -130,14 +130,14 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
             {pile.length === 0 && (
               <div
                 className={cn(
-                  "w-16 h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50",
+                  "w-10 h-14 sm:w-12 sm:h-16 md:w-14 md:h-20 lg:w-16 lg:h-24 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 hover:bg-muted/50",
                   dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
                 )}
                 onClick={() => onEmptyPileClick('tableau', pileIndex)}
               >
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                  <div className="w-8 h-8 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">K</span>
+                  <div className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                    <span className="text-[8px] sm:text-xs text-muted-foreground">K</span>
                   </div>
                 </div>
               </div>
@@ -163,13 +163,13 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                   isSelectable={canSelect}
                   isDragging={isDragging}
                   style={{
-                    marginTop: cardIndex > 0 ? '-60px' : '0',
+                    marginTop: cardIndex > 0 ? '-32px' : '0', // Tight overlap for mobile
                     zIndex: cardIndex,
                   }}
                   className={cn(
                     "relative transition-all duration-300",
-                    canSelect && "hover:translate-y-[-4px]",
-                    !isLastCard && card.faceUp && "hover:translate-y-[-8px]"
+                    canSelect && "hover:translate-y-[-2px]",
+                    !isLastCard && card.faceUp && "hover:translate-y-[-4px]"
                   )}
                 />
               );
