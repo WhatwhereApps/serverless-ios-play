@@ -31,6 +31,18 @@ export const Card = ({
   style,
   className 
 }: CardProps) => {
+  const handleDragStart = (e: React.DragEvent) => {
+    if (isSelectable && onDragStart) {
+      onDragStart(e);
+    }
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    if (onDragEnd) {
+      onDragEnd(e);
+    }
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
     if (isSelectable && onDragStart) {
       e.preventDefault();
@@ -56,8 +68,8 @@ export const Card = ({
         )}
         onClick={onClick}
         draggable={isSelectable}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         style={style}
@@ -85,8 +97,8 @@ export const Card = ({
       )}
       onClick={onClick}
       draggable={isSelectable}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       style={style}
