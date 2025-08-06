@@ -7,6 +7,8 @@ import { Card as CardType } from '@/types/solitaire';
 
 export const SolitaireGame = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [lastClickTime, setLastClickTime] = useState(0);
+  const [lastClickedCard, setLastClickedCard] = useState<string | null>(null);
   
   const { 
     gameState, 
@@ -23,24 +25,54 @@ export const SolitaireGame = () => {
     dragSource: null as { type: string; index?: number; cardIndex?: number } | null,
   });
 
+  // Haptic feedback function
+  const triggerHaptic = (type: 'light' | 'medium' | 'heavy' = 'light') => {
+    if ('vibrate' in navigator) {
+      const patterns = {
+        light: [10],
+        medium: [20],
+        heavy: [50]
+      };
+      navigator.vibrate(patterns[type]);
+    }
+  };
+
   const handleLoadingComplete = () => {
     setIsLoading(false);
   };
 
   const handleCardClick = (card: CardType, pileType: string, pileIndex?: number, cardIndex?: number) => {
+    const currentTime = Date.now();
+    const isDoubleClick = lastClickedCard === card.id && currentTime - lastClickTime < 300;
+    
+    setLastClickTime(currentTime);
+    setLastClickedCard(card.id);
+
+    // Haptic feedback for card selection
+    triggerHaptic('light');
+
     if (gameState.selectedCard) {
+      // If double-clicking the same selected card, deselect it
+      if (isDoubleClick && gameState.selectedCard.id === card.id) {
+        selectCard(card, pileType, pileIndex, cardIndex);
+        triggerHaptic('medium');
+        return;
+      }
+
+      // If clicking the same card (single click), deselect
+      if (gameState.selectedCard.id === card.id) {
+        selectCard(card, pileType, pileIndex, cardIndex);
+        return;
+      }
+
       // Try to move selected card to clicked location
       const { selectedPile } = gameState;
       if (selectedPile) {
         const fromIndex = selectedPile.index;
         const cardIdx = (gameState as any).cardIndex;
         
-        // If clicking on the same card, deselect
-        if (gameState.selectedCard.id === card.id) {
-          selectCard(card, pileType, pileIndex, cardIndex);
-          return;
-        }
-
+        const originalScore = gameState.score;
+        
         // Try to move to this pile
         if (pileType === 'foundation' && pileIndex !== undefined) {
           moveCard(selectedPile.type, fromIndex, 'foundation', pileIndex, cardIdx);
@@ -49,7 +81,15 @@ export const SolitaireGame = () => {
         } else {
           // Select new card instead
           selectCard(card, pileType, pileIndex, cardIndex);
+          return;
         }
+        
+        // Check if move was successful by comparing score change
+        setTimeout(() => {
+          if (gameState.score > originalScore) {
+            triggerHaptic('heavy'); // Success haptic
+          }
+        }, 50);
       }
     } else {
       // Select card
@@ -62,12 +102,22 @@ export const SolitaireGame = () => {
       const { selectedPile } = gameState;
       const fromIndex = selectedPile.index;
       const cardIdx = (gameState as any).cardIndex;
+      
+      triggerHaptic('light');
+      const originalScore = gameState.score;
 
       if (pileType === 'foundation' && pileIndex !== undefined) {
         moveCard(selectedPile.type, fromIndex, 'foundation', pileIndex, cardIdx);
       } else if (pileType === 'tableau' && pileIndex !== undefined) {
         moveCard(selectedPile.type, fromIndex, 'tableau', pileIndex, cardIdx);
       }
+      
+      // Success haptic feedback
+      setTimeout(() => {
+        if (gameState.score > originalScore) {
+          triggerHaptic('heavy');
+        }
+      }, 50);
     }
   };
 

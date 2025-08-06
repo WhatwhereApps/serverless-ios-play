@@ -132,7 +132,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'card-flip': 'card-flip 0.6s ease-in-out',
 				'card-deal': 'card-deal 0.4s ease-out',
-				'victory-pulse': 'victory-pulse 2s ease-in-out infinite'
+				'victory-pulse': 'victory-pulse 2s ease-in-out infinite',
+				'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			},
 			boxShadow: {
 				'card': 'var(--card-shadow)',
