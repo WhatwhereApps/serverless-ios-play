@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { useSolitaire } from '@/hooks/useSolitaire';
 import { GameHeader } from './GameHeader';
 import { GameBoard } from './GameBoard';
+import { LoadingScreen } from './LoadingScreen';
 import { Card as CardType } from '@/types/solitaire';
 
 export const SolitaireGame = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  
   const { 
     gameState, 
     dealCards, 
@@ -19,6 +22,10 @@ export const SolitaireGame = () => {
     dragCard: null as CardType | null,
     dragSource: null as { type: string; index?: number; cardIndex?: number } | null,
   });
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
 
   const handleCardClick = (card: CardType, pileType: string, pileIndex?: number, cardIndex?: number) => {
     if (gameState.selectedCard) {
@@ -91,6 +98,10 @@ export const SolitaireGame = () => {
     // Reset drag state
     handleDragEnd();
   };
+
+  if (isLoading) {
+    return <LoadingScreen onComplete={handleLoadingComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-game-felt p-2 sm:p-4 space-y-3 sm:space-y-6">

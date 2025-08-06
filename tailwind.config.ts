@@ -17,7 +17,11 @@ export default {
 				'2xl': '1400px'
 			}
 		},
-		extend: {
+    extend: {
+      fontFamily: {
+        'fredoka': ['Fredoka One', 'cursive'],
+        'orbitron': ['Orbitron', 'monospace'],
+      },
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
