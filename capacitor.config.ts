@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.solitaire',
-  appName: 'Solitaire Game',
+  appId: 'app.lovable.7c6dd9655ba34b9ca2f7d483a7634a6d',
+  appName: 'Solitaire Master',
   webDir: 'dist',
   // Comment out server config for local builds
   // server: {
