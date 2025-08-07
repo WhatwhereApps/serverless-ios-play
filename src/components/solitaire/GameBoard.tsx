@@ -39,19 +39,29 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
           {/* Deck */}
           <div
             className={cn(
-              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-300",
+              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed transition-all duration-300",
               deck.length > 0 
-                ? "border-transparent" 
-                : "border-border bg-game-felt-light hover:bg-muted/50"
+                ? "border-transparent cursor-pointer" 
+                : waste.length > 0 
+                  ? "border-border bg-game-felt-light hover:bg-muted/50 cursor-pointer"
+                  : "border-border bg-game-felt-light cursor-not-allowed opacity-50"
             )}
-            onClick={onDeckClick}
+            onClick={deck.length > 0 || waste.length > 0 ? onDeckClick : undefined}
           >
-            {deck.length > 0 && (
+            {deck.length > 0 ? (
               <Card
                 card={deck[deck.length - 1]}
                 onClick={onDeckClick}
                 isSelectable={true}
               />
+            ) : waste.length > 0 ? (
+              <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                  <span className="text-xs sm:text-sm text-muted-foreground">↻</span>
+                </div>
+              </div>
+            ) : (
+              <div className="w-full h-full bg-game-felt-light rounded-lg" />
             )}
           </div>
 

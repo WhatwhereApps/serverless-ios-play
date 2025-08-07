@@ -33,7 +33,7 @@ export const useSolitaire = () => {
       });
     });
     
-    // Shuffle deck
+    // Shuffle deck only once when creating new game
     for (let i = deck.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [deck[i], deck[j]] = [deck[j], deck[i]];
@@ -76,7 +76,8 @@ export const useSolitaire = () => {
   const drawFromDeck = useCallback(() => {
     setGameState(prev => {
       if (prev.deck.length === 0) {
-        // Reset deck from waste
+        // Reset deck from waste (keep waste cards in same order, just flip them face down)
+        if (prev.waste.length === 0) return prev; // No cards to reset
         const newDeck = [...prev.waste].reverse().map(card => ({ ...card, faceUp: false }));
         return { 
           ...prev, 
