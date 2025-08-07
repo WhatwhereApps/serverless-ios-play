@@ -1,5 +1,6 @@
 import { Card as CardType } from '@/types/solitaire';
 import { cn } from '@/lib/utils';
+import { useState, useRef } from 'react';
 
 interface CardProps {
   card: CardType;
@@ -31,38 +32,72 @@ export const Card = ({
   style,
   className 
 }: CardProps) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isDragActive, setIsDragActive] = useState(false);
+  const touchStartTime = useRef<number>(0);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const hasMoved = useRef(false);
   const handleDragStart = (e: React.DragEvent) => {
-    console.log('Card handleDragStart called', { 
-      cardId: card.id, 
-      isSelectable, 
-      hasOnDragStart: !!onDragStart
-    });
     if (isSelectable && onDragStart) {
+      setIsDragActive(true);
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', card.id);
       onDragStart(e);
-    } else {
-      console.log('Drag blocked:', { isSelectable, hasOnDragStart: !!onDragStart });
     }
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
-    console.log('Card handleDragEnd called');
+    setIsDragActive(false);
     if (onDragEnd) {
       onDragEnd(e);
     }
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (isSelectable && onDragStart) {
-      e.preventDefault();
-      onDragStart(e);
+    if (!isSelectable) return;
+    
+    touchStartTime.current = Date.now();
+    hasMoved.current = false;
+    setIsPressed(true);
+    
+    // Start long press timer for drag
+    longPressTimer.current = setTimeout(() => {
+      if (!hasMoved.current && isSelectable && onDragStart) {
+        setIsDragActive(true);
+        // Haptic feedback for drag start
+        if ('vibrate' in navigator) {
+          navigator.vibrate([10, 50, 10]);
+        }
+        onDragStart(e);
+      }
+    }, 300); // 300ms for long press
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    hasMoved.current = true;
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
     }
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (onDragEnd) {
-      onDragEnd(e);
+    const touchDuration = Date.now() - touchStartTime.current;
+    setIsPressed(false);
+    
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+
+    if (isDragActive) {
+      setIsDragActive(false);
+      if (onDragEnd) {
+        onDragEnd(e);
+      }
+    } else if (!hasMoved.current && touchDuration < 300 && onClick) {
+      // Regular tap
+      onClick();
     }
   };
   if (!card.faceUp) {
@@ -70,16 +105,18 @@ export const Card = ({
       <div
         className={cn(
           "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-border cursor-pointer",
-          "bg-card-back shadow-card",
-          "flex items-center justify-center relative overflow-hidden",
-          isDragging && "opacity-50",
+          "bg-card-back shadow-card transition-all duration-200",
+          "flex items-center justify-center relative overflow-hidden touch-manipulation",
+          (isDragging || isDragActive) && "opacity-70 scale-105 rotate-2 shadow-lg z-50",
+          isPressed && "scale-95",
           className
         )}
-        onClick={onClick}
+        onClick={!isDragActive ? onClick : undefined}
         draggable={isSelectable}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         style={style}
       >
@@ -93,20 +130,22 @@ export const Card = ({
     <div
       className={cn(
         "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 cursor-pointer",
-        "bg-card text-card-foreground shadow-card relative overflow-hidden",
-        "flex flex-col justify-between p-0.5 sm:p-1",
+        "bg-card text-card-foreground shadow-card relative overflow-hidden transition-all duration-200",
+        "flex flex-col justify-between p-0.5 sm:p-1 touch-manipulation",
         isSelected && "border-card-highlight shadow-card-hover ring-2 ring-card-highlight",
         !isSelected && "border-border",
-        isDragging && "opacity-50",
+        (isDragging || isDragActive) && "opacity-70 scale-105 rotate-2 shadow-lg z-50",
+        isPressed && "scale-95",
         card.color === 'red' && "text-card-red",
         card.color === 'black' && "text-card-black",
         className
       )}
-      onClick={onClick}
+      onClick={!isDragActive ? onClick : undefined}
       draggable={isSelectable}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       style={style}
     >
