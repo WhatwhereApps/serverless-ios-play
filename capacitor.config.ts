@@ -1,18 +1,26 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.7c6dd9655ba34b9ca2f7d483a7634a6d',
+  appId: 'app.solitaire.master',
   appName: 'Solitaire Master',
   webDir: 'dist',
-  // Comment out server config for local builds
-  // server: {
-  //   url: "https://7c6dd965-5ba3-4b9c-a2f7-d483a7634a6d.lovableproject.com?forceHideBadge=true",
-  //   cleartext: true
-  // },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 0,
+      launchShowDuration: 2000,
+      launchAutoHide: true,
+      backgroundColor: '#0a3d2a',
+      showSpinner: false,
     },
+    StatusBar: {
+      style: 'DARK',
+      backgroundColor: '#0a3d2a',
+    },
+  },
+  ios: {
+    contentInset: 'automatic',
+  },
+  android: {
+    backgroundColor: '#0a3d2a',
   },
 };
 
