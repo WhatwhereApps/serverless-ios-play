@@ -48,15 +48,6 @@ export const HomeScreen = ({ onNewGame, onContinue, hasSavedGame }: HomeScreenPr
           New Game
         </Button>
 
-        <Button
-          variant="ghost"
-          size="lg"
-          className="w-full h-14 text-lg text-emerald-200 hover:text-white hover:bg-emerald-700/50"
-          disabled
-        >
-          <Trophy className="mr-3 h-5 w-5" />
-          Statistics
-        </Button>
 
         <Button
           variant="ghost"
