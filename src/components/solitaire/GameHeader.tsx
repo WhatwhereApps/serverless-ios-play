@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Trophy, Clock, Target } from 'lucide-react';
+import { RefreshCw, Trophy, Clock, Target, Home } from 'lucide-react';
 
 interface GameHeaderProps {
   score: number;
@@ -7,10 +7,11 @@ interface GameHeaderProps {
   time: number;
   onNewGame: () => void;
   onRestart: () => void;
+  onHome: () => void;
   isWon: boolean;
 }
 
-export const GameHeader = ({ score, moves, time, onNewGame, onRestart, isWon }: GameHeaderProps) => {
+export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, isWon }: GameHeaderProps) => {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -38,6 +39,15 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, isWon }: 
 
       <div className="flex items-center gap-1 sm:gap-3">
         <Button
+          variant="ghost"
+          size="sm"
+          onClick={onHome}
+          className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
+        >
+          <Home className="w-3 h-3 sm:w-4 sm:h-4" />
+        </Button>
+
+        <Button
           variant="outline"
           size="sm"
           onClick={onRestart}
@@ -54,7 +64,7 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, isWon }: 
           className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
           <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="text-xs sm:text-sm">New Game</span>
+          <span className="text-xs sm:text-sm">New</span>
         </Button>
       </div>
 

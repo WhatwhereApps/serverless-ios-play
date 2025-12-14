@@ -3,11 +3,14 @@ import { useSolitaire } from '@/hooks/useSolitaire';
 import { GameHeader } from './GameHeader';
 import { GameBoard } from './GameBoard';
 import { LoadingScreen } from './LoadingScreen';
+import { HomeScreen } from './HomeScreen';
 import { Card as CardType } from '@/types/solitaire';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 
+type Screen = 'home' | 'loading' | 'game';
+
 export const SolitaireGame = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [lastClickTime, setLastClickTime] = useState(0);
   const [lastClickedCard, setLastClickedCard] = useState<string | null>(null);
   
@@ -51,7 +54,16 @@ export const SolitaireGame = () => {
   }, []);
 
   const handleLoadingComplete = () => {
-    setIsLoading(false);
+    setCurrentScreen('game');
+  };
+
+  const handleNewGame = () => {
+    dealCards();
+    setCurrentScreen('loading');
+  };
+
+  const handleBackToHome = () => {
+    setCurrentScreen('home');
   };
 
   const handleCardClick = (card: CardType, pileType: string, pileIndex?: number, cardIndex?: number) => {
@@ -156,7 +168,11 @@ export const SolitaireGame = () => {
     handleDragEnd();
   };
 
-  if (isLoading) {
+  if (currentScreen === 'home') {
+    return <HomeScreen onNewGame={handleNewGame} />;
+  }
+
+  if (currentScreen === 'loading') {
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
 
@@ -166,8 +182,9 @@ export const SolitaireGame = () => {
         score={gameState.score}
         moves={gameState.moves}
         time={gameState.time}
-        onNewGame={dealCards}
+        onNewGame={handleNewGame}
         onRestart={restartGame}
+        onHome={handleBackToHome}
         isWon={gameState.isWon}
       />
       
