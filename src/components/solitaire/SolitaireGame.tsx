@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useSolitaire } from '@/hooks/useSolitaire';
 import { GameHeader } from './GameHeader';
 import { GameBoard } from './GameBoard';
 import { LoadingScreen } from './LoadingScreen';
 import { Card as CardType } from '@/types/solitaire';
+import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 
 export const SolitaireGame = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,17 +26,29 @@ export const SolitaireGame = () => {
     dragSource: null as { type: string; index?: number; cardIndex?: number } | null,
   });
 
-  // Haptic feedback function
-  const triggerHaptic = (type: 'light' | 'medium' | 'heavy' = 'light') => {
-    if ('vibrate' in navigator) {
-      const patterns = {
-        light: [10],
-        medium: [20],
-        heavy: [50]
-      };
-      navigator.vibrate(patterns[type]);
+  // Enhanced haptic feedback using Capacitor Haptics
+  const triggerHaptic = useCallback(async (type: 'light' | 'medium' | 'heavy' | 'success' | 'error' = 'light') => {
+    try {
+      if (type === 'success') {
+        await Haptics.notification({ type: NotificationType.Success });
+      } else if (type === 'error') {
+        await Haptics.notification({ type: NotificationType.Error });
+      } else {
+        const styles = {
+          light: ImpactStyle.Light,
+          medium: ImpactStyle.Medium,
+          heavy: ImpactStyle.Heavy,
+        };
+        await Haptics.impact({ style: styles[type] });
+      }
+    } catch {
+      // Fallback to navigator.vibrate for web
+      if ('vibrate' in navigator) {
+        const patterns = { light: [10], medium: [20], heavy: [50], success: [30, 50, 30], error: [100] };
+        navigator.vibrate(patterns[type] || [10]);
+      }
     }
-  };
+  }, []);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -84,12 +97,8 @@ export const SolitaireGame = () => {
           return;
         }
         
-        // Check if move was successful by comparing score change
-        setTimeout(() => {
-          if (gameState.score > originalScore) {
-            triggerHaptic('heavy'); // Success haptic
-          }
-        }, 50);
+        // Success haptic for card move
+        triggerHaptic('success');
       }
     } else {
       // Select card
@@ -112,16 +121,13 @@ export const SolitaireGame = () => {
         moveCard(selectedPile.type, fromIndex, 'tableau', pileIndex, cardIdx);
       }
       
-      // Success haptic feedback
-      setTimeout(() => {
-        if (gameState.score > originalScore) {
-          triggerHaptic('heavy');
-        }
-      }, 50);
+      // Success haptic for pile move
+      triggerHaptic('success');
     }
   };
 
   const handleDragStart = (card: CardType, pileType: string, pileIndex?: number, cardIndex?: number) => {
+    triggerHaptic('medium');
     setDragState({
       isDragging: true,
       dragCard: card,
@@ -144,6 +150,7 @@ export const SolitaireGame = () => {
     
     // Use the existing moveCard logic
     moveCard(fromType, fromIndex, pileType, pileIndex, cardIndex);
+    triggerHaptic('success');
     
     // Reset drag state
     handleDragEnd();
