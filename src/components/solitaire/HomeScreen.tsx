@@ -1,13 +1,26 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Settings, Trophy, Info } from 'lucide-react';
+import { Play, Settings, Info } from 'lucide-react';
+import { SettingsDialog } from './SettingsDialog';
+import { GameSettings } from '@/hooks/useGameSettings';
 
 interface HomeScreenProps {
   onNewGame: () => void;
   onContinue?: () => void;
   hasSavedGame?: boolean;
+  settings: GameSettings;
+  onUpdateSetting: <K extends keyof GameSettings>(key: K, value: GameSettings[K]) => void;
 }
 
-export const HomeScreen = ({ onNewGame, onContinue, hasSavedGame }: HomeScreenProps) => {
+export const HomeScreen = ({ 
+  onNewGame, 
+  onContinue, 
+  hasSavedGame,
+  settings,
+  onUpdateSetting
+}: HomeScreenProps) => {
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-800 to-emerald-950 flex flex-col items-center justify-center p-6">
       {/* Logo/Title */}
@@ -48,12 +61,11 @@ export const HomeScreen = ({ onNewGame, onContinue, hasSavedGame }: HomeScreenPr
           New Game
         </Button>
 
-
         <Button
           variant="ghost"
           size="lg"
           className="w-full h-14 text-lg text-emerald-200 hover:text-white hover:bg-emerald-700/50"
-          disabled
+          onClick={() => setSettingsOpen(true)}
         >
           <Settings className="mr-3 h-5 w-5" />
           Settings
@@ -74,6 +86,14 @@ export const HomeScreen = ({ onNewGame, onContinue, hasSavedGame }: HomeScreenPr
       <div className="mt-auto pt-12">
         <p className="text-emerald-400/60 text-xs">Version 1.0</p>
       </div>
+
+      {/* Settings Dialog */}
+      <SettingsDialog
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        settings={settings}
+        onUpdateSetting={onUpdateSetting}
+      />
     </div>
   );
 };

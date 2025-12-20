@@ -1,6 +1,7 @@
 import { Card } from './Card';
 import { GameState } from '@/types/solitaire';
 import { cn } from '@/lib/utils';
+import { CardBackDesign } from '@/hooks/useGameSettings';
 
 interface GameBoardProps {
   gameState: GameState;
@@ -15,9 +16,20 @@ interface GameBoardProps {
     dragCard: any;
     dragSource: { type: string; index?: number; cardIndex?: number } | null;
   };
+  cardBackDesign?: CardBackDesign;
 }
 
-export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClick, onCardDrop, onDragStart, onDragEnd, dragState }: GameBoardProps) => {
+export const GameBoard = ({ 
+  gameState, 
+  onCardClick, 
+  onEmptyPileClick, 
+  onDeckClick, 
+  onCardDrop, 
+  onDragStart, 
+  onDragEnd, 
+  dragState,
+  cardBackDesign = 'classic-blue'
+}: GameBoardProps) => {
   const { deck, waste, foundations, tableau, selectedCard } = gameState;
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -53,6 +65,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                 card={deck[deck.length - 1]}
                 onClick={onDeckClick}
                 isSelectable={true}
+                cardBackDesign={cardBackDesign}
               />
             ) : waste.length > 0 ? (
               <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
@@ -83,6 +96,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                 isSelected={selectedCard?.id === waste[waste.length - 1]?.id}
                 isSelectable={true}
                 isDragging={dragState.isDragging && dragState.dragCard?.id === waste[waste.length - 1]?.id}
+                cardBackDesign={cardBackDesign}
               />
             ) : (
               <div className="w-full h-full bg-game-felt-light rounded-lg" />
@@ -113,6 +127,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                   isSelected={selectedCard?.id === foundation[foundation.length - 1]?.id}
                   isSelectable={true}
                   isDragging={dragState.isDragging && dragState.dragCard?.id === foundation[foundation.length - 1]?.id}
+                  cardBackDesign={cardBackDesign}
                 />
               ) : (
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
@@ -174,6 +189,7 @@ export const GameBoard = ({ gameState, onCardClick, onEmptyPileClick, onDeckClic
                   isSelected={selectedCard?.id === card.id}
                   isSelectable={canSelect}
                   isDragging={isDragging}
+                  cardBackDesign={cardBackDesign}
                   style={{
                     marginTop: cardIndex > 0 ? '-40px' : '0', // Increased overlap for bigger cards
                     zIndex: cardIndex,

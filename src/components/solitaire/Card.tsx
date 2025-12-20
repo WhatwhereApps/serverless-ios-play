@@ -1,5 +1,6 @@
 import { Card as CardType } from '@/types/solitaire';
 import { cn } from '@/lib/utils';
+import { CardBackDesign, cardBackDesigns } from '@/hooks/useGameSettings';
 
 interface CardProps {
   card: CardType;
@@ -11,6 +12,7 @@ interface CardProps {
   isDragging?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  cardBackDesign?: CardBackDesign;
 }
 
 const suitSymbols = {
@@ -29,7 +31,8 @@ export const Card = ({
   isSelectable = false,
   isDragging = false,
   style,
-  className 
+  className,
+  cardBackDesign = 'classic-blue'
 }: CardProps) => {
   const handleDragStart = (e: React.DragEvent) => {
     if (isSelectable && onDragStart) {
@@ -44,12 +47,15 @@ export const Card = ({
       onDragEnd(e);
     }
   };
+
+  const backDesign = cardBackDesigns[cardBackDesign];
+
   if (!card.faceUp) {
     return (
       <div
         className={cn(
           "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-border cursor-pointer",
-          "bg-card-back shadow-card transition-transform duration-200",
+          "shadow-card transition-transform duration-200",
           "flex items-center justify-center relative overflow-hidden",
           isDragging && "opacity-50 scale-105",
           isSelectable && "hover:scale-105",
@@ -61,8 +67,16 @@ export const Card = ({
         onDragEnd={handleDragEnd}
         style={style}
       >
-        <div className="absolute inset-2 rounded border border-white/20 bg-gradient-to-br from-blue-900/50 to-blue-800/50" />
-        <div className="text-white/60 text-xs font-bold">♠</div>
+        <div className={cn(
+          "absolute inset-0 bg-gradient-to-br",
+          backDesign.gradient
+        )} />
+        <div className={cn(
+          "absolute inset-2 rounded border",
+          backDesign.accent,
+          "bg-black/10"
+        )} />
+        <div className="text-white/60 text-xs font-bold z-10">♠</div>
       </div>
     );
   }
@@ -92,7 +106,6 @@ export const Card = ({
         <span className="text-xs sm:text-sm font-bold">{card.rank}</span>
         <span className="text-sm sm:text-base">{suitSymbols[card.suit]}</span>
       </div>
-
 
       {/* Bottom right corner (rotated) */}
       <div className="absolute bottom-1 right-1 sm:bottom-1.5 sm:right-1.5 flex flex-col items-center leading-none rotate-180">
