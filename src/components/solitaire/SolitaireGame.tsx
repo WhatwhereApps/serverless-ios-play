@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useSolitaire } from '@/hooks/useSolitaire';
+import { useGameSettings } from '@/hooks/useGameSettings';
 import { GameHeader } from './GameHeader';
 import { GameBoard } from './GameBoard';
 import { LoadingScreen } from './LoadingScreen';
@@ -13,6 +14,8 @@ export const SolitaireGame = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [lastClickTime, setLastClickTime] = useState(0);
   const [lastClickedCard, setLastClickedCard] = useState<string | null>(null);
+  
+  const { settings, updateSetting } = useGameSettings();
   
   const { 
     gameState, 
@@ -29,12 +32,26 @@ export const SolitaireGame = () => {
     dragSource: null as { type: string; index?: number; cardIndex?: number } | null,
   });
 
-  // Enhanced haptic feedback using Capacitor Haptics
+  // Enhanced haptic feedback using Capacitor Haptics with settings support
   const triggerHaptic = useCallback(async (type: 'light' | 'medium' | 'heavy' | 'success' | 'error' = 'light') => {
+    // Check if vibration is enabled
+    if (settings.vibrationIntensity === 'off') return;
+
+    // Map setting intensity to haptic type
+    const intensityMap: Record<string, 'light' | 'medium' | 'heavy'> = {
+      light: 'light',
+      medium: 'medium',
+      heavy: 'heavy',
+    };
+    
+    const effectiveType = type === 'success' || type === 'error' 
+      ? type 
+      : intensityMap[settings.vibrationIntensity] || type;
+
     try {
-      if (type === 'success') {
+      if (effectiveType === 'success') {
         await Haptics.notification({ type: NotificationType.Success });
-      } else if (type === 'error') {
+      } else if (effectiveType === 'error') {
         await Haptics.notification({ type: NotificationType.Error });
       } else {
         const styles = {
@@ -42,16 +59,16 @@ export const SolitaireGame = () => {
           medium: ImpactStyle.Medium,
           heavy: ImpactStyle.Heavy,
         };
-        await Haptics.impact({ style: styles[type] });
+        await Haptics.impact({ style: styles[effectiveType] });
       }
     } catch {
       // Fallback to navigator.vibrate for web
       if ('vibrate' in navigator) {
         const patterns = { light: [10], medium: [20], heavy: [50], success: [30, 50, 30], error: [100] };
-        navigator.vibrate(patterns[type] || [10]);
+        navigator.vibrate(patterns[effectiveType] || [10]);
       }
     }
-  }, []);
+  }, [settings.vibrationIntensity]);
 
   const handleLoadingComplete = () => {
     setCurrentScreen('game');
@@ -96,8 +113,6 @@ export const SolitaireGame = () => {
         const fromIndex = selectedPile.index;
         const cardIdx = (gameState as any).cardIndex;
         
-        const originalScore = gameState.score;
-        
         // Try to move to this pile
         if (pileType === 'foundation' && pileIndex !== undefined) {
           moveCard(selectedPile.type, fromIndex, 'foundation', pileIndex, cardIdx);
@@ -125,7 +140,6 @@ export const SolitaireGame = () => {
       const cardIdx = (gameState as any).cardIndex;
       
       triggerHaptic('light');
-      const originalScore = gameState.score;
 
       if (pileType === 'foundation' && pileIndex !== undefined) {
         moveCard(selectedPile.type, fromIndex, 'foundation', pileIndex, cardIdx);
@@ -169,7 +183,13 @@ export const SolitaireGame = () => {
   };
 
   if (currentScreen === 'home') {
-    return <HomeScreen onNewGame={handleNewGame} />;
+    return (
+      <HomeScreen 
+        onNewGame={handleNewGame}
+        settings={settings}
+        onUpdateSetting={updateSetting}
+      />
+    );
   }
 
   if (currentScreen === 'loading') {
@@ -197,6 +217,7 @@ export const SolitaireGame = () => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         dragState={dragState}
+        cardBackDesign={settings.cardBackDesign}
       />
 
       {gameState.isWon && (
