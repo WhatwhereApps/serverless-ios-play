@@ -7,11 +7,12 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Volume2, VolumeX, Vibrate, Globe } from 'lucide-react';
+import { Volume2, VolumeX, Vibrate, Globe, Hand } from 'lucide-react';
 import { 
   GameSettings, 
   CardBackDesign, 
   VibrationIntensity,
+  HandPreference,
   cardBackDesigns 
 } from '@/hooks/useGameSettings';
 import { cn } from '@/lib/utils';
@@ -126,6 +127,41 @@ export const SettingsDialog = ({
                 <span>{t.vibrationMedium}</span>
                 <span>{t.vibrationHeavy}</span>
               </div>
+            </div>
+
+            {/* Hand Preference */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <Hand className="h-5 w-5 text-emerald-300" />
+                <Label className="text-base text-emerald-100">{t.handPreference}</Label>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => onUpdateSetting('handPreference', 'left')}
+                  className={cn(
+                    "p-3 rounded-lg text-sm transition-all duration-200 border",
+                    settings.handPreference === 'left'
+                      ? "bg-emerald-500 border-emerald-400 text-white"
+                      : "bg-emerald-800/50 border-emerald-700/50 text-emerald-200 hover:bg-emerald-700/50"
+                  )}
+                >
+                  {t.leftHand}
+                </button>
+                <button
+                  onClick={() => onUpdateSetting('handPreference', 'right')}
+                  className={cn(
+                    "p-3 rounded-lg text-sm transition-all duration-200 border",
+                    settings.handPreference === 'right'
+                      ? "bg-emerald-500 border-emerald-400 text-white"
+                      : "bg-emerald-800/50 border-emerald-700/50 text-emerald-200 hover:bg-emerald-700/50"
+                  )}
+                >
+                  {t.rightHand}
+                </button>
+              </div>
+              <p className="text-xs text-emerald-400/70 text-center">
+                {t.handPreferenceDescription}
+              </p>
             </div>
 
             {/* Card Back Design */}

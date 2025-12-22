@@ -1,7 +1,7 @@
 import { Card } from './Card';
 import { GameState } from '@/types/solitaire';
 import { cn } from '@/lib/utils';
-import { CardBackDesign } from '@/hooks/useGameSettings';
+import { CardBackDesign, HandPreference } from '@/hooks/useGameSettings';
 
 interface GameBoardProps {
   gameState: GameState;
@@ -17,6 +17,7 @@ interface GameBoardProps {
     dragSource: { type: string; index?: number; cardIndex?: number } | null;
   };
   cardBackDesign?: CardBackDesign;
+  handPreference?: HandPreference;
 }
 
 export const GameBoard = ({ 
@@ -28,9 +29,14 @@ export const GameBoard = ({
   onDragStart, 
   onDragEnd, 
   dragState,
-  cardBackDesign = 'classic-blue'
+  cardBackDesign = 'classic-blue',
+  handPreference = 'right'
 }: GameBoardProps) => {
   const { deck, waste, foundations, tableau, selectedCard } = gameState;
+
+  // For right-hand: foundations left, deck right
+  // For left-hand: deck left, foundations right
+  const isRightHand = handPreference === 'right';
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -42,102 +48,121 @@ export const GameBoard = ({
     onCardDrop(pileType, pileIndex);
   };
 
+  // Foundations component
+  const FoundationsPile = () => (
+    <div className={cn("flex gap-1 sm:gap-2 lg:gap-4", isRightHand ? "order-1" : "order-2 ml-4 sm:ml-6")}>
+      {foundations.map((foundation, index) => (
+        <div
+          key={index}
+          className={cn(
+            "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
+            dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
+          )}
+          onClick={() => onEmptyPileClick('foundation', index)}
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, 'foundation', index)}
+        >
+          {foundation.length > 0 ? (
+            <Card
+              card={foundation[foundation.length - 1]}
+              onClick={() => onCardClick(foundation[foundation.length - 1], 'foundation', index)}
+              onDragStart={(e) => onDragStart(foundation[foundation.length - 1], 'foundation', index)}
+              onDragEnd={onDragEnd}
+              isSelected={selectedCard?.id === foundation[foundation.length - 1]?.id}
+              isSelectable={true}
+              isDragging={dragState.isDragging && dragState.dragCard?.id === foundation[foundation.length - 1]?.id}
+              cardBackDesign={cardBackDesign}
+            />
+          ) : (
+            <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                <span className="text-xs sm:text-sm text-muted-foreground">A</span>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  // Deck and Waste component
+  const DeckWastePile = () => (
+    <div className={cn("flex gap-1 sm:gap-2 lg:gap-4", isRightHand ? "order-2 ml-4 sm:ml-6" : "order-1")}>
+      {/* Deck - on right for right-hand, on left for left-hand */}
+      {!isRightHand && (
+        <DeckPile />
+      )}
+      
+      {/* Waste */}
+      <div 
+        className={cn(
+          "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
+          dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
+        )}
+        onDragOver={handleDragOver}
+        onDrop={(e) => handleDrop(e, 'waste')}
+      >
+        {waste.length > 0 ? (
+          <Card
+            card={waste[waste.length - 1]}
+            onClick={() => onCardClick(waste[waste.length - 1], 'waste')}
+            onDragStart={(e) => onDragStart(waste[waste.length - 1], 'waste')}
+            onDragEnd={onDragEnd}
+            isSelected={selectedCard?.id === waste[waste.length - 1]?.id}
+            isSelectable={true}
+            isDragging={dragState.isDragging && dragState.dragCard?.id === waste[waste.length - 1]?.id}
+            cardBackDesign={cardBackDesign}
+          />
+        ) : (
+          <div className="w-full h-full bg-game-felt-light rounded-lg" />
+        )}
+      </div>
+
+      {/* Deck - on right for right-hand */}
+      {isRightHand && (
+        <DeckPile />
+      )}
+    </div>
+  );
+
+  // Deck pile component
+  const DeckPile = () => (
+    <div
+      className={cn(
+        "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed transition-all duration-300",
+        deck.length > 0 
+          ? "border-transparent cursor-pointer" 
+          : waste.length > 0 
+            ? "border-border bg-game-felt-light hover:bg-muted/50 cursor-pointer"
+            : "border-border bg-game-felt-light cursor-not-allowed opacity-50"
+      )}
+      onClick={deck.length > 0 || waste.length > 0 ? onDeckClick : undefined}
+    >
+      {deck.length > 0 ? (
+        <Card
+          card={deck[deck.length - 1]}
+          onClick={onDeckClick}
+          isSelectable={true}
+          cardBackDesign={cardBackDesign}
+        />
+      ) : waste.length > 0 ? (
+        <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
+          <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+            <span className="text-xs sm:text-sm text-muted-foreground">↻</span>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full h-full bg-game-felt-light rounded-lg" />
+      )}
+    </div>
+  );
+
   return (
     <div className="w-full mx-auto space-y-4 sm:space-y-6 lg:space-y-8 px-1 sm:px-2 lg:px-4">
-      {/* Top Row: Foundations on left, Deck/Waste on right */}
+      {/* Top Row: Layout changes based on hand preference */}
       <div className="flex flex-wrap justify-center sm:justify-between items-center gap-2 sm:gap-4">
-        {/* Left side: Foundations */}
-        <div className="flex gap-1 sm:gap-2 lg:gap-4 order-1">
-          {foundations.map((foundation, index) => (
-            <div
-              key={index}
-              className={cn(
-                "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
-                dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
-              )}
-              onClick={() => onEmptyPileClick('foundation', index)}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, 'foundation', index)}
-            >
-              {foundation.length > 0 ? (
-                <Card
-                  card={foundation[foundation.length - 1]}
-                  onClick={() => onCardClick(foundation[foundation.length - 1], 'foundation', index)}
-                  onDragStart={(e) => onDragStart(foundation[foundation.length - 1], 'foundation', index)}
-                  onDragEnd={onDragEnd}
-                  isSelected={selectedCard?.id === foundation[foundation.length - 1]?.id}
-                  isSelectable={true}
-                  isDragging={dragState.isDragging && dragState.dragCard?.id === foundation[foundation.length - 1]?.id}
-                  cardBackDesign={cardBackDesign}
-                />
-              ) : (
-                <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                    <span className="text-xs sm:text-sm text-muted-foreground">A</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Right side: Waste and Deck */}
-        <div className="flex gap-1 sm:gap-2 lg:gap-4 order-2 ml-4 sm:ml-6">
-          {/* Waste */}
-          <div 
-            className={cn(
-              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
-              dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
-            )}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, 'waste')}
-          >
-            {waste.length > 0 ? (
-              <Card
-                card={waste[waste.length - 1]}
-                onClick={() => onCardClick(waste[waste.length - 1], 'waste')}
-                onDragStart={(e) => onDragStart(waste[waste.length - 1], 'waste')}
-                onDragEnd={onDragEnd}
-                isSelected={selectedCard?.id === waste[waste.length - 1]?.id}
-                isSelectable={true}
-                isDragging={dragState.isDragging && dragState.dragCard?.id === waste[waste.length - 1]?.id}
-                cardBackDesign={cardBackDesign}
-              />
-            ) : (
-              <div className="w-full h-full bg-game-felt-light rounded-lg" />
-            )}
-          </div>
-
-          {/* Deck */}
-          <div
-            className={cn(
-              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed transition-all duration-300",
-              deck.length > 0 
-                ? "border-transparent cursor-pointer" 
-                : waste.length > 0 
-                  ? "border-border bg-game-felt-light hover:bg-muted/50 cursor-pointer"
-                  : "border-border bg-game-felt-light cursor-not-allowed opacity-50"
-            )}
-            onClick={deck.length > 0 || waste.length > 0 ? onDeckClick : undefined}
-          >
-            {deck.length > 0 ? (
-              <Card
-                card={deck[deck.length - 1]}
-                onClick={onDeckClick}
-                isSelectable={true}
-                cardBackDesign={cardBackDesign}
-              />
-            ) : waste.length > 0 ? (
-              <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                  <span className="text-xs sm:text-sm text-muted-foreground">↻</span>
-                </div>
-              </div>
-            ) : (
-              <div className="w-full h-full bg-game-felt-light rounded-lg" />
-            )}
-          </div>
-        </div>
+        <FoundationsPile />
+        <DeckWastePile />
       </div>
 
       {/* Bottom Row: Tableau */}
