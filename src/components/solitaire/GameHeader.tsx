@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Trophy, Clock, Target, Home, Settings } from 'lucide-react';
+import { RefreshCw, Trophy, Clock, Target, Home } from 'lucide-react';
 import { useLanguage } from '@/i18n';
 
 interface GameHeaderProps {
@@ -9,11 +9,10 @@ interface GameHeaderProps {
   onNewGame: () => void;
   onRestart: () => void;
   onHome: () => void;
-  onSettings: () => void;
   isWon: boolean;
 }
 
-export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, onSettings, isWon }: GameHeaderProps) => {
+export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, isWon }: GameHeaderProps) => {
   const { t } = useLanguage();
   
   const formatTime = (seconds: number) => {
@@ -34,19 +33,11 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, o
           className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
           <Home className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="text-xs sm:text-sm">{t.menu}</span>
         </Button>
 
         {/* Right side buttons */}
         <div className="flex items-center gap-1 sm:gap-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onSettings}
-            className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
-          >
-            <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span className="text-xs sm:text-sm">{t.settings}</span>
-          </Button>
 
         <Button
           variant="outline"
