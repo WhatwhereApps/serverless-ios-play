@@ -22,7 +22,7 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
   };
 
   return (
-    <div className="flex flex-col gap-2 p-3 sm:p-5 pt-safe-area-inset-top mt-6 sm:mt-4">
+    <div className="flex flex-col gap-2 p-3 sm:p-5 pt-safe-area-inset-top mt-2 sm:mt-4">
       {/* Buttons row - above everything, aligned right */}
       <div className="flex items-center justify-between gap-1 sm:gap-3">
         {/* Home button on left */}
