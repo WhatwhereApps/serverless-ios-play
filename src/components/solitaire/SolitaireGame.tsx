@@ -5,6 +5,7 @@ import { GameHeader } from './GameHeader';
 import { GameBoard } from './GameBoard';
 import { LoadingScreen } from './LoadingScreen';
 import { HomeScreen } from './HomeScreen';
+import { VictoryScreen } from './VictoryScreen';
 import { Card as CardType } from '@/types/solitaire';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 
@@ -221,16 +222,13 @@ export const SolitaireGame = () => {
       />
 
       {gameState.isWon && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center pointer-events-none z-50">
-          <div className="text-center space-y-4 animate-victory-pulse">
-            <div className="text-8xl font-bold text-victory-glow">
-              🎉 VICTORY! 🎉
-            </div>
-            <div className="text-2xl text-foreground">
-              Score: {gameState.score} | Moves: {gameState.moves}
-            </div>
-          </div>
-        </div>
+        <VictoryScreen
+          score={gameState.score}
+          moves={gameState.moves}
+          time={gameState.time}
+          onNewGame={handleNewGame}
+          onHome={handleBackToHome}
+        />
       )}
     </div>
   );
