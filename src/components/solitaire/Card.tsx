@@ -76,7 +76,7 @@ export const Card = ({
           backDesign.accent,
           "bg-black/10"
         )} />
-        <div className="text-white/60 text-xs font-bold z-10">♠</div>
+        <div className="text-white/60 text-sm sm:text-base font-bold z-10">♠</div>
       </div>
     );
   }
@@ -103,14 +103,14 @@ export const Card = ({
     >
       {/* Top left corner */}
       <div className="absolute top-1 left-1 sm:top-1.5 sm:left-1.5 flex flex-col items-center leading-none">
-        <span className="text-xs sm:text-sm font-bold">{card.rank}</span>
-        <span className="text-sm sm:text-base">{suitSymbols[card.suit]}</span>
+        <span className="text-sm sm:text-base lg:text-lg font-bold">{card.rank}</span>
+        <span className="text-base sm:text-lg lg:text-xl">{suitSymbols[card.suit]}</span>
       </div>
 
       {/* Bottom right corner (rotated) */}
       <div className="absolute bottom-1 right-1 sm:bottom-1.5 sm:right-1.5 flex flex-col items-center leading-none rotate-180">
-        <span className="text-xs sm:text-sm font-bold">{card.rank}</span>
-        <span className="text-sm sm:text-base">{suitSymbols[card.suit]}</span>
+        <span className="text-sm sm:text-base lg:text-lg font-bold">{card.rank}</span>
+        <span className="text-base sm:text-lg lg:text-xl">{suitSymbols[card.suit]}</span>
       </div>
     </div>
   );
