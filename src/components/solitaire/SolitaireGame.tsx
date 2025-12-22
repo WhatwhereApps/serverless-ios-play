@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useSolitaire } from '@/hooks/useSolitaire';
 import { useGameSettings } from '@/hooks/useGameSettings';
 import { GameHeader } from './GameHeader';
@@ -11,8 +11,12 @@ import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 
 type Screen = 'home' | 'loading' | 'game';
 
+const LOADING_SHOWN_KEY = 'whatwhere_loading_shown';
+
 export const SolitaireGame = () => {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('home');
+  // Check if this is the first app launch
+  const hasSeenLoading = localStorage.getItem(LOADING_SHOWN_KEY) === 'true';
+  const [currentScreen, setCurrentScreen] = useState<Screen>(hasSeenLoading ? 'home' : 'loading');
   const [lastClickTime, setLastClickTime] = useState(0);
   const [lastClickedCard, setLastClickedCard] = useState<string | null>(null);
   
@@ -72,12 +76,14 @@ export const SolitaireGame = () => {
   }, [settings.vibrationIntensity]);
 
   const handleLoadingComplete = () => {
-    setCurrentScreen('game');
+    // Mark loading as shown so it won't appear again
+    localStorage.setItem(LOADING_SHOWN_KEY, 'true');
+    setCurrentScreen('home');
   };
 
   const handleNewGame = () => {
     dealCards();
-    setCurrentScreen('loading');
+    setCurrentScreen('game');
   };
 
   const handleBackToHome = () => {
