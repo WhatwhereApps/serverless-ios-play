@@ -44,10 +44,45 @@ export const GameBoard = ({
 
   return (
     <div className="w-full mx-auto space-y-4 sm:space-y-6 lg:space-y-8 px-1 sm:px-2 lg:px-4">
-      {/* Top Row: All piles on left side for mobile */}
+      {/* Top Row: Foundations on left, Deck/Waste on right */}
       <div className="flex flex-wrap justify-center sm:justify-between items-center gap-2 sm:gap-4">
-        {/* Left side: Deck and Waste */}
+        {/* Left side: Foundations */}
         <div className="flex gap-1 sm:gap-2 lg:gap-4 order-1">
+          {foundations.map((foundation, index) => (
+            <div
+              key={index}
+              className={cn(
+                "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
+                dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
+              )}
+              onClick={() => onEmptyPileClick('foundation', index)}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, 'foundation', index)}
+            >
+              {foundation.length > 0 ? (
+                <Card
+                  card={foundation[foundation.length - 1]}
+                  onClick={() => onCardClick(foundation[foundation.length - 1], 'foundation', index)}
+                  onDragStart={(e) => onDragStart(foundation[foundation.length - 1], 'foundation', index)}
+                  onDragEnd={onDragEnd}
+                  isSelected={selectedCard?.id === foundation[foundation.length - 1]?.id}
+                  isSelectable={true}
+                  isDragging={dragState.isDragging && dragState.dragCard?.id === foundation[foundation.length - 1]?.id}
+                  cardBackDesign={cardBackDesign}
+                />
+              ) : (
+                <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                    <span className="text-xs sm:text-sm text-muted-foreground">A</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Right side: Deck and Waste */}
+        <div className="flex gap-1 sm:gap-2 lg:gap-4 order-2 ml-4 sm:ml-6">
           {/* Deck */}
           <div
             className={cn(
@@ -102,42 +137,6 @@ export const GameBoard = ({
               <div className="w-full h-full bg-game-felt-light rounded-lg" />
             )}
           </div>
-        </div>
-
-        
-        {/* Foundations - with space from discard pile */}
-        <div className="flex gap-1 sm:gap-2 lg:gap-4 order-2 ml-4 sm:ml-6">
-          {foundations.map((foundation, index) => (
-            <div
-              key={index}
-              className={cn(
-                "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border cursor-pointer transition-all duration-300 relative hover:bg-muted/50",
-                dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
-              )}
-              onClick={() => onEmptyPileClick('foundation', index)}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, 'foundation', index)}
-            >
-              {foundation.length > 0 ? (
-                <Card
-                  card={foundation[foundation.length - 1]}
-                  onClick={() => onCardClick(foundation[foundation.length - 1], 'foundation', index)}
-                  onDragStart={(e) => onDragStart(foundation[foundation.length - 1], 'foundation', index)}
-                  onDragEnd={onDragEnd}
-                  isSelected={selectedCard?.id === foundation[foundation.length - 1]?.id}
-                  isSelectable={true}
-                  isDragging={dragState.isDragging && dragState.dragCard?.id === foundation[foundation.length - 1]?.id}
-                  cardBackDesign={cardBackDesign}
-                />
-              ) : (
-                <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                    <span className="text-xs sm:text-sm text-muted-foreground">A</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
         </div>
       </div>
 
