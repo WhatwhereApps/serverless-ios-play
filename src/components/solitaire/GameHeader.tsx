@@ -22,25 +22,9 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
   };
 
   return (
-    <div className="flex items-center justify-between p-3 sm:p-5 pt-safe-area-inset-top mt-6 sm:mt-4">
-      <div className="flex items-center gap-2 sm:gap-6">
-        <div className="flex items-center gap-1 sm:gap-2">
-          <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-victory-glow" />
-          <span className="text-sm sm:text-lg font-bold text-foreground">{score}</span>
-        </div>
-        
-        <div className="flex items-center gap-1 sm:gap-2">
-          <Target className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-          <span className="text-sm sm:text-lg font-semibold text-foreground">{moves}</span>
-        </div>
-        
-        <div className="flex items-center gap-1 sm:gap-2">
-          <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-          <span className="text-sm sm:text-lg font-mono text-foreground">{formatTime(time)}</span>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-1 sm:gap-3">
+    <div className="flex flex-col gap-2 p-3 sm:p-5 pt-safe-area-inset-top mt-6 sm:mt-4">
+      {/* Buttons row - above everything, aligned right */}
+      <div className="flex items-center justify-end gap-1 sm:gap-3">
         <Button
           variant="ghost"
           size="sm"
@@ -69,6 +53,24 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
           <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
           <span className="text-xs sm:text-sm">{t.new}</span>
         </Button>
+      </div>
+
+      {/* Stats row */}
+      <div className="flex items-center gap-2 sm:gap-6">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-victory-glow" />
+          <span className="text-sm sm:text-lg font-bold text-foreground">{score}</span>
+        </div>
+        
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Target className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+          <span className="text-sm sm:text-lg font-semibold text-foreground">{moves}</span>
+        </div>
+        
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+          <span className="text-sm sm:text-lg font-mono text-foreground">{formatTime(time)}</span>
+        </div>
       </div>
 
       {isWon && (
