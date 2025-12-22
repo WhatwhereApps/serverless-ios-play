@@ -30,10 +30,10 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
           variant="ghost"
           size="sm"
           onClick={onHome}
-          className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
+          className="gap-1.5 text-sm sm:text-base px-2.5 sm:px-4"
         >
-          <Home className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="text-xs sm:text-sm">{t.menu}</span>
+          <Home className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-sm sm:text-base">{t.menu}</span>
         </Button>
 
         {/* Right side buttons */}
@@ -43,39 +43,39 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
           variant="outline"
           size="sm"
           onClick={onRestart}
-          className="hover:bg-primary hover:text-primary-foreground gap-1 text-xs sm:text-sm px-2 sm:px-3"
+          className="hover:bg-primary hover:text-primary-foreground gap-1.5 text-sm sm:text-base px-2.5 sm:px-4"
         >
-          <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="text-xs sm:text-sm">{t.restart}</span>
+          <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-sm sm:text-base">{t.restart}</span>
         </Button>
         
         <Button
           variant="default"
           size="sm"
           onClick={onNewGame}
-          className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
+          className="gap-1.5 text-sm sm:text-base px-2.5 sm:px-4"
         >
-          <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span className="text-xs sm:text-sm">{t.new}</span>
+          <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm sm:text-base">{t.new}</span>
           </Button>
         </div>
       </div>
 
       {/* Stats row */}
       <div className="flex items-center gap-2 sm:gap-6">
-        <div className="flex items-center gap-1 sm:gap-2">
-          <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-victory-glow" />
-          <span className="text-sm sm:text-lg font-bold text-foreground">{score}</span>
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-victory-glow" />
+          <span className="text-base sm:text-xl font-bold text-foreground">{score}</span>
         </div>
         
-        <div className="flex items-center gap-1 sm:gap-2">
-          <Target className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-          <span className="text-sm sm:text-lg font-semibold text-foreground">{moves}</span>
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Target className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
+          <span className="text-base sm:text-xl font-semibold text-foreground">{moves}</span>
         </div>
         
-        <div className="flex items-center gap-1 sm:gap-2">
-          <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-          <span className="text-sm sm:text-lg font-mono text-foreground">{formatTime(time)}</span>
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
+          <span className="text-base sm:text-xl font-mono text-foreground">{formatTime(time)}</span>
         </div>
       </div>
 

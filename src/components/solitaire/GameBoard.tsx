@@ -75,8 +75,8 @@ export const GameBoard = ({
             />
           ) : (
             <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-              <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                <span className="text-xs sm:text-sm text-muted-foreground">A</span>
+              <div className="w-7 h-7 sm:w-9 sm:h-9 lg:w-12 lg:h-12 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                <span className="text-sm sm:text-base lg:text-lg text-muted-foreground">A</span>
               </div>
             </div>
           )}
@@ -147,8 +147,8 @@ export const GameBoard = ({
         />
       ) : waste.length > 0 ? (
         <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-            <span className="text-xs sm:text-sm text-muted-foreground">↻</span>
+          <div className="w-7 h-7 sm:w-9 sm:h-9 lg:w-12 lg:h-12 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+            <span className="text-sm sm:text-base lg:text-lg text-muted-foreground">↻</span>
           </div>
         </div>
       ) : (
@@ -187,8 +187,8 @@ export const GameBoard = ({
                 onClick={() => onEmptyPileClick('tableau', pileIndex)}
               >
                 <div className="w-full h-full bg-game-felt-light rounded-lg flex items-center justify-center">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                      <span className="text-xs sm:text-sm text-muted-foreground">K</span>
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 lg:w-12 lg:h-12 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                      <span className="text-sm sm:text-base lg:text-lg text-muted-foreground">K</span>
                   </div>
                 </div>
               </div>
