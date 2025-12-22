@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Home, RotateCcw } from 'lucide-react';
+import { useLanguage } from '@/i18n';
 
 interface ConfettiPiece {
   id: number;
@@ -33,6 +34,7 @@ const CONFETTI_COLORS = [
 
 export const VictoryScreen = ({ score, moves, time, onNewGame, onHome }: VictoryScreenProps) => {
   const [confetti, setConfetti] = useState<ConfettiPiece[]>([]);
+  const { t } = useLanguage();
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -85,24 +87,24 @@ export const VictoryScreen = ({ score, moves, time, onNewGame, onHome }: Victory
         {/* Title */}
         <div className="space-y-2">
           <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
-            Congratulations!
+            {t.congratulations}
           </h1>
-          <p className="text-muted-foreground text-lg">You won the game!</p>
+          <p className="text-muted-foreground text-lg">{t.youWonTheGame}</p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 py-4 border-y border-border">
           <div className="space-y-1">
             <div className="text-2xl sm:text-3xl font-bold text-primary">{score}</div>
-            <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wide">Score</div>
+            <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wide">{t.score}</div>
           </div>
           <div className="space-y-1">
             <div className="text-2xl sm:text-3xl font-bold text-primary">{moves}</div>
-            <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wide">Moves</div>
+            <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wide">{t.moves}</div>
           </div>
           <div className="space-y-1">
             <div className="text-2xl sm:text-3xl font-bold text-primary">{formatTime(time)}</div>
-            <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wide">Time</div>
+            <div className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wide">{t.time}</div>
           </div>
         </div>
 
@@ -114,14 +116,14 @@ export const VictoryScreen = ({ score, moves, time, onNewGame, onHome }: Victory
             className="flex-1 gap-2"
           >
             <Home className="w-4 h-4" />
-            Home
+            {t.home}
           </Button>
           <Button
             onClick={onNewGame}
             className="flex-1 gap-2"
           >
             <RotateCcw className="w-4 h-4" />
-            Play Again
+            {t.playAgain}
           </Button>
         </div>
       </div>

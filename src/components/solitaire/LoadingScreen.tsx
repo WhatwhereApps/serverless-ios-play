@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/i18n';
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -6,13 +7,14 @@ interface LoadingScreenProps {
 
 export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onComplete, 500); // Small delay before transitioning
+          setTimeout(onComplete, 500);
           return 100;
         }
         return prev + 2;
@@ -27,7 +29,7 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       {/* Main Title */}
       <div className="text-center space-y-8">
         <h1 className="font-fredoka text-6xl sm:text-8xl text-white drop-shadow-2xl animate-pulse">
-          Solitaire
+          {t.appTitle}
         </h1>
         
         {/* Subtitle */}
@@ -44,7 +46,7 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
             />
           </div>
           <div className="text-white/80 text-sm mt-2 font-orbitron">
-            Loading... {progress}%
+            {t.loading} {progress}%
           </div>
         </div>
       </div>
