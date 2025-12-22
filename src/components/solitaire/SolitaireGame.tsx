@@ -6,6 +6,7 @@ import { GameBoard } from './GameBoard';
 import { LoadingScreen } from './LoadingScreen';
 import { HomeScreen } from './HomeScreen';
 import { VictoryScreen } from './VictoryScreen';
+import { SettingsDialog } from './SettingsDialog';
 import { Card as CardType } from '@/types/solitaire';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { toast } from 'sonner';
@@ -22,6 +23,7 @@ export const SolitaireGame = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>(hasSeenLoading ? 'home' : 'loading');
   const [lastClickTime, setLastClickTime] = useState(0);
   const [lastClickedCard, setLastClickedCard] = useState<string | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   const { settings, updateSetting } = useGameSettings();
   const { t } = useLanguage();
@@ -228,6 +230,7 @@ export const SolitaireGame = () => {
         onNewGame={handleNewGame}
         onRestart={restartGame}
         onHome={handleBackToHome}
+        onSettings={() => setIsSettingsOpen(true)}
         isWon={gameState.isWon}
       />
       
@@ -253,6 +256,13 @@ export const SolitaireGame = () => {
           onHome={handleBackToHome}
         />
       )}
+
+      <SettingsDialog
+        open={isSettingsOpen}
+        onOpenChange={setIsSettingsOpen}
+        settings={settings}
+        onUpdateSetting={updateSetting}
+      />
     </div>
   );
 };

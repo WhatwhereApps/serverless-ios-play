@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Trophy, Clock, Target, Home } from 'lucide-react';
+import { RefreshCw, Trophy, Clock, Target, Home, Settings } from 'lucide-react';
 import { useLanguage } from '@/i18n';
 
 interface GameHeaderProps {
@@ -9,10 +9,11 @@ interface GameHeaderProps {
   onNewGame: () => void;
   onRestart: () => void;
   onHome: () => void;
+  onSettings: () => void;
   isWon: boolean;
 }
 
-export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, isWon }: GameHeaderProps) => {
+export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, onSettings, isWon }: GameHeaderProps) => {
   const { t } = useLanguage();
   
   const formatTime = (seconds: number) => {
@@ -24,7 +25,8 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
   return (
     <div className="flex flex-col gap-2 p-3 sm:p-5 pt-safe-area-inset-top mt-6 sm:mt-4">
       {/* Buttons row - above everything, aligned right */}
-      <div className="flex items-center justify-end gap-1 sm:gap-3">
+      <div className="flex items-center justify-between gap-1 sm:gap-3">
+        {/* Home button on left */}
         <Button
           variant="ghost"
           size="sm"
@@ -33,6 +35,18 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
         >
           <Home className="w-3 h-3 sm:w-4 sm:h-4" />
         </Button>
+
+        {/* Right side buttons */}
+        <div className="flex items-center gap-1 sm:gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onSettings}
+            className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
+          >
+            <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="text-xs sm:text-sm">{t.settings}</span>
+          </Button>
 
         <Button
           variant="outline"
@@ -51,8 +65,9 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
           className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
           <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="text-xs sm:text-sm">{t.new}</span>
-        </Button>
+            <span className="text-xs sm:text-sm">{t.new}</span>
+          </Button>
+        </div>
       </div>
 
       {/* Stats row */}
