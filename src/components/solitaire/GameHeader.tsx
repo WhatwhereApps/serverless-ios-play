@@ -22,7 +22,7 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
   };
 
   return (
-    <div className="flex items-center justify-between p-3 sm:p-5 pt-safe-area-inset-top bg-secondary/50 backdrop-blur-sm rounded-lg border border-border mt-6 sm:mt-4">
+    <div className="flex items-center justify-between p-3 sm:p-5 pt-safe-area-inset-top mt-6 sm:mt-4">
       <div className="flex items-center gap-2 sm:gap-6">
         <div className="flex items-center gap-1 sm:gap-2">
           <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-victory-glow" />
