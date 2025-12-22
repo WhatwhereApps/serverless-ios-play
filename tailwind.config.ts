@@ -125,6 +125,26 @@ export default {
 						transform: 'scale(1.02)',
 						filter: 'brightness(1.1)'
 					}
+				},
+				'confetti-fall': {
+					'0%': {
+						transform: 'translateY(0) rotate(0deg)',
+						opacity: '1'
+					},
+					'100%': {
+						transform: 'translateY(100vh) rotate(720deg)',
+						opacity: '0'
+					}
+				},
+				'scale-in': {
+					'0%': {
+						transform: 'scale(0.8)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
@@ -133,7 +153,9 @@ export default {
 				'card-flip': 'card-flip 0.6s ease-in-out',
 				'card-deal': 'card-deal 0.4s ease-out',
 				'victory-pulse': 'victory-pulse 2s ease-in-out infinite',
-				'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+				'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'confetti-fall': 'confetti-fall 5s linear forwards',
+				'scale-in': 'scale-in 0.3s ease-out'
 			},
 			boxShadow: {
 				'card': 'var(--card-shadow)',
