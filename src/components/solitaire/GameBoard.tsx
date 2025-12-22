@@ -81,8 +81,33 @@ export const GameBoard = ({
           ))}
         </div>
 
-        {/* Right side: Deck and Waste */}
+        {/* Right side: Waste and Deck */}
         <div className="flex gap-1 sm:gap-2 lg:gap-4 order-2 ml-4 sm:ml-6">
+          {/* Waste */}
+          <div 
+            className={cn(
+              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
+              dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
+            )}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, 'waste')}
+          >
+            {waste.length > 0 ? (
+              <Card
+                card={waste[waste.length - 1]}
+                onClick={() => onCardClick(waste[waste.length - 1], 'waste')}
+                onDragStart={(e) => onDragStart(waste[waste.length - 1], 'waste')}
+                onDragEnd={onDragEnd}
+                isSelected={selectedCard?.id === waste[waste.length - 1]?.id}
+                isSelectable={true}
+                isDragging={dragState.isDragging && dragState.dragCard?.id === waste[waste.length - 1]?.id}
+                cardBackDesign={cardBackDesign}
+              />
+            ) : (
+              <div className="w-full h-full bg-game-felt-light rounded-lg" />
+            )}
+          </div>
+
           {/* Deck */}
           <div
             className={cn(
@@ -108,31 +133,6 @@ export const GameBoard = ({
                   <span className="text-xs sm:text-sm text-muted-foreground">↻</span>
                 </div>
               </div>
-            ) : (
-              <div className="w-full h-full bg-game-felt-light rounded-lg" />
-            )}
-          </div>
-
-          {/* Waste */}
-          <div 
-            className={cn(
-              "w-12 h-18 sm:w-16 sm:h-22 md:w-18 md:h-26 lg:w-20 lg:h-32 rounded-lg border-2 border-dashed border-border relative transition-all duration-300",
-              dragState.isDragging && "hover:border-card-highlight hover:bg-muted/20"
-            )}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, 'waste')}
-          >
-            {waste.length > 0 ? (
-              <Card
-                card={waste[waste.length - 1]}
-                onClick={() => onCardClick(waste[waste.length - 1], 'waste')}
-                onDragStart={(e) => onDragStart(waste[waste.length - 1], 'waste')}
-                onDragEnd={onDragEnd}
-                isSelected={selectedCard?.id === waste[waste.length - 1]?.id}
-                isSelectable={true}
-                isDragging={dragState.isDragging && dragState.dragCard?.id === waste[waste.length - 1]?.id}
-                cardBackDesign={cardBackDesign}
-              />
             ) : (
               <div className="w-full h-full bg-game-felt-light rounded-lg" />
             )}
