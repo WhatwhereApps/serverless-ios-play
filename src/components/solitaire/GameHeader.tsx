@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Trophy, Clock, Target, Home } from 'lucide-react';
+import { useLanguage } from '@/i18n';
 
 interface GameHeaderProps {
   score: number;
@@ -12,6 +13,8 @@ interface GameHeaderProps {
 }
 
 export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, isWon }: GameHeaderProps) => {
+  const { t } = useLanguage();
+  
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -54,7 +57,7 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
           className="hover:bg-primary hover:text-primary-foreground gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
           <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="text-xs sm:text-sm">Restart</span>
+          <span className="text-xs sm:text-sm">{t.restart}</span>
         </Button>
         
         <Button
@@ -64,14 +67,14 @@ export const GameHeader = ({ score, moves, time, onNewGame, onRestart, onHome, i
           className="gap-1 text-xs sm:text-sm px-2 sm:px-3"
         >
           <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span className="text-xs sm:text-sm">New</span>
+          <span className="text-xs sm:text-sm">{t.new}</span>
         </Button>
       </div>
 
       {isWon && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="text-6xl font-bold text-victory-glow animate-victory-pulse">
-            YOU WON!
+            {t.youWon}
           </div>
         </div>
       )}
