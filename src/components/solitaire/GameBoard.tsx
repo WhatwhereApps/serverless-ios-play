@@ -166,7 +166,7 @@ export const GameBoard = ({
       </div>
 
       {/* Bottom Row: Tableau */}
-      <div className="grid grid-cols-7 gap-px sm:gap-1 lg:gap-2 justify-center w-full mt-2 sm:mt-4 lg:mt-6">
+      <div className="grid grid-cols-7 gap-px sm:gap-1 lg:gap-2 justify-center w-full mt-4 sm:mt-6 lg:mt-8">
         {tableau.map((pile, pileIndex) => (
           <div 
             key={pileIndex} 
