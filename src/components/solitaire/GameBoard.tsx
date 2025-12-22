@@ -215,7 +215,7 @@ export const GameBoard = ({
                   isDragging={isDragging}
                   cardBackDesign={cardBackDesign}
                   style={{
-                    marginTop: cardIndex > 0 ? '-40px' : '0', // Increased overlap for bigger cards
+                    marginTop: cardIndex > 0 ? '-32px' : '0', // Less overlap = more space between cards
                     zIndex: cardIndex,
                   }}
                   className={cn(
