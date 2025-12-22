@@ -225,6 +225,7 @@ export const SolitaireGame = () => {
         onDragEnd={handleDragEnd}
         dragState={dragState}
         cardBackDesign={settings.cardBackDesign}
+        handPreference={settings.handPreference}
       />
 
       {gameState.isWon && (

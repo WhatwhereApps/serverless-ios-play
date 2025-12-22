@@ -2,17 +2,20 @@ import { useState, useEffect, useCallback } from 'react';
 
 export type CardBackDesign = 'classic-blue' | 'classic-red' | 'royal-purple' | 'forest-green' | 'midnight';
 export type VibrationIntensity = 'off' | 'light' | 'medium' | 'heavy';
+export type HandPreference = 'left' | 'right';
 
 export interface GameSettings {
   soundEnabled: boolean;
   vibrationIntensity: VibrationIntensity;
   cardBackDesign: CardBackDesign;
+  handPreference: HandPreference;
 }
 
 const DEFAULT_SETTINGS: GameSettings = {
   soundEnabled: true,
   vibrationIntensity: 'medium',
   cardBackDesign: 'classic-blue',
+  handPreference: 'right',
 };
 
 const STORAGE_KEY = 'solitaire-settings';
