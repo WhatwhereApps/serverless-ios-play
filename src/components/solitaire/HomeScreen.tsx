@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Settings, Info } from 'lucide-react';
 import { SettingsDialog } from './SettingsDialog';
+import { HowToPlayDialog } from './HowToPlayDialog';
 import { GameSettings } from '@/hooks/useGameSettings';
-
 interface HomeScreenProps {
   onNewGame: () => void;
   onContinue?: () => void;
@@ -20,6 +20,7 @@ export const HomeScreen = ({
   onUpdateSetting
 }: HomeScreenProps) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [howToPlayOpen, setHowToPlayOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-800 to-emerald-950 flex flex-col items-center justify-center p-6">
@@ -75,7 +76,7 @@ export const HomeScreen = ({
           variant="ghost"
           size="lg"
           className="w-full h-14 text-lg text-emerald-200 hover:text-white hover:bg-emerald-700/50"
-          disabled
+          onClick={() => setHowToPlayOpen(true)}
         >
           <Info className="mr-3 h-5 w-5" />
           How to Play
@@ -93,6 +94,12 @@ export const HomeScreen = ({
         onOpenChange={setSettingsOpen}
         settings={settings}
         onUpdateSetting={onUpdateSetting}
+      />
+
+      {/* How to Play Dialog */}
+      <HowToPlayDialog
+        open={howToPlayOpen}
+        onOpenChange={setHowToPlayOpen}
       />
     </div>
   );
